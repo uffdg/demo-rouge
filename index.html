@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#E9E6DF;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#171512}a:hover{color:#A6332A}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:40px;padding:44px 28px 60px;background:radial-gradient(1200px 600px at 50% -10%, #F1EEE7, #E9E6DF)">
+
+  <!-- ===== PANEL DE DEMO (fuera del portal) ===== -->
+  <div style="width:340px;display:flex;flex-direction:column;gap:14px">
+    <div style="background:#FFFFFF;border:1px solid #DBD7CC;border-radius:14px;padding:18px 18px 16px">
+      <div style="font-size:10px;letter-spacing:0.16em;color:#8A8779;text-transform:uppercase;font-weight:600;margin-bottom:14px">Panel de demo · Qurable — no es parte del portal</div>
+      <div style="font-size:11px;letter-spacing:0.1em;color:#B3AFA3;text-transform:uppercase;font-weight:600;margin-bottom:8px">Journeys MVP · Día de la Madre</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <sc-for list="{{ journeyList }}" as="j" hint-placeholder-count="6">
+          <button onClick="{{ j.select }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1px solid {{ j.border }};background:{{ j.bg }};color:{{ j.fg }};border-radius:10px;padding:9px 12px;cursor:pointer;font-family:inherit;transition:all 0.18s ease" style-hover="border-color:#171512">
+            <span style="font-size:10px;font-weight:700;letter-spacing:0.06em;width:22px;color:{{ j.numColor }}">{{ j.num }}</span>
+            <span style="flex:1;font-size:12.5px;font-weight:600;line-height:1.25">{{ j.name }}</span>
+            <span style="font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:{{ j.tagColor }}">{{ j.tag }}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button onClick="{{ prevJourney }}" style="flex:1;border:1px solid #DBD7CC;background:#F6F4EF;color:#33312B;border-radius:8px;padding:8px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit" style-hover="border-color:#171512">← Anterior</button>
+        <button onClick="{{ nextJourney }}" style="flex:1;border:1px solid #171512;background:#171512;color:#FFFFFF;border-radius:8px;padding:8px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit">Siguiente →</button>
+      </div>
+    </div>
+
+    <div style="background:#FFFFFF;border:1px solid #DBD7CC;border-radius:14px;padding:16px 18px">
+      <div style="font-size:11px;letter-spacing:0.1em;color:#B3AFA3;text-transform:uppercase;font-weight:600;margin-bottom:10px">Explorar por categoría</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <sc-for list="{{ tierList }}" as="tp" hint-placeholder-count="6">
+          <button onClick="{{ tp.select }}" style="border:1px solid {{ tp.border }};background:{{ tp.bg }};color:{{ tp.fg }};font-size:11px;padding:6px 12px;border-radius:20px;cursor:pointer;font-family:inherit;transition:all 0.18s ease" style-hover="border-color:#171512">{{ tp.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <sc-if value="{{ showCanal }}" hint-placeholder-val="{{ true }}">
+      <div style="background:#FFFFFF;border:1px solid #DBD7CC;border-radius:14px;padding:16px 18px;animation:fadeUp 0.3s ease">
+        <div style="font-size:11px;letter-spacing:0.1em;color:#B3AFA3;text-transform:uppercase;font-weight:600;margin-bottom:10px">Paso 3 · Canal (AWS) — {{ canalType }}</div>
+        <sc-if value="{{ canalIsEmail }}" hint-placeholder-val="{{ true }}">
+          <div style="border:1px solid #E4E1D7;border-radius:10px;overflow:hidden">
+            <div style="background:#F6F4EF;padding:9px 12px;border-bottom:1px solid #E4E1D7;display:flex;align-items:center;gap:8px">
+              <span style="width:24px;height:24px;border-radius:50%;background:#171512;color:#C9A860;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:13px">e</span>
+              <span style="font-size:11px;font-weight:700;color:#33312B">Rouge Elite</span>
+              <span style="font-size:10px;color:#B3AFA3;margin-left:auto">ahora</span>
+            </div>
+            <div style="padding:11px 12px">
+              <div style="font-size:12px;font-weight:700;color:#171512;margin-bottom:3px">{{ canalSubject }}</div>
+              <div style="font-size:11.5px;color:#77736A;line-height:1.5">{{ canalBody }}</div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ canalIsChat }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#E7E2D6;border-radius:10px;padding:12px">
+            <div style="background:#FFFFFF;border-radius:10px 10px 10px 2px;padding:10px 12px;max-width:92%;box-shadow:0 1px 2px rgba(0,0,0,0.08)">
+              <div style="font-size:10.5px;font-weight:700;color:#A6332A;margin-bottom:3px">Rouge Elite</div>
+              <div style="font-size:12px;color:#33312B;line-height:1.5">{{ canalBody }}</div>
+              <div style="font-size:9.5px;color:#B3AFA3;text-align:right;margin-top:4px">{{ canalTime }}</div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+  </div>
+
+  <!-- ===== PORTAL DEL MEMBER (device) ===== -->
+  <div style="width:400px;max-width:100%;background:#FFFFFF;border-radius:26px;box-shadow:0 24px 60px rgba(23,21,18,0.18);overflow:hidden;border:1px solid #DBD7CC">
+    <div style="background:#F3F1EA;padding:10px 16px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #E4E1D7">
+      <span style="width:8px;height:8px;border-radius:50%;background:#E0645A"></span>
+      <span style="width:8px;height:8px;border-radius:50%;background:#E0B95A"></span>
+      <span style="width:8px;height:8px;border-radius:50%;background:#6FBF73"></span>
+      <span style="margin-left:10px;font-size:11px;color:#8A8779">perfumeriasrouge.com/elite</span>
+    </div>
+    <div style="max-height:720px;overflow-y:auto;position:relative;background:#F3EEE2;color:#171512">
+
+      <div style="background:#171512;color:#FFFFFF;padding:14px 20px;display:flex;align-items:center;justify-content:space-between">
+        <img src="assets/rouge-light.svg" alt="ROUGE" style="height:13px;display:block">
+        <span style="font-size:10px;letter-spacing:0.26em;font-weight:600;color:#C9A860">ELITE</span>
+      </div>
+
+      <div style="padding:30px 24px 22px;text-align:center">
+        <div style="font-size:10px;letter-spacing:0.26em;color:#77736A;font-weight:600;margin-bottom:4px">PROGRAMA DE FIDELIDAD</div>
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:44px;line-height:1;margin-bottom:22px">Elite</div>
+        <div style="display:flex;justify-content:center;margin-bottom:18px">
+          <div style="width:104px;height:104px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#FFFFFF;position:relative;transition:background 0.5s ease;box-shadow:0 10px 28px rgba(23,21,18,0.22);background:{{ tierColor }}">
+            <span style="position:absolute;inset:7px;border-radius:50%;border:1px solid rgba(255,255,255,0.4)"></span>
+            <span style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:19px">Elite</span>
+            <span style="position:absolute;bottom:-9px;font-size:9px;letter-spacing:0.16em;background:#171512;color:#FFFFFF;padding:4px 12px;border-radius:20px;white-space:nowrap;font-weight:600">{{ tierLabel }}</span>
+          </div>
+        </div>
+        <div style="font-size:13px;color:#77736A;margin-bottom:8px">Hola, {{ memberName }}</div>
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:46px;line-height:1;margin-bottom:4px">{{ pointsDisplay }}</div>
+        <div style="font-size:10.5px;letter-spacing:0.14em;color:#77736A;text-transform:uppercase;margin-bottom:18px">puntos acumulados</div>
+        <div style="height:4px;background:#DAD4C3;border-radius:4px;overflow:hidden;margin-bottom:7px">
+          <div style="height:100%;border-radius:4px;transition:width 0.6s ease,background 0.5s ease;width:{{ percent }}%;background:{{ tierColor }}"></div>
+        </div>
+        <div style="font-size:11px;color:#77736A">{{ nextLabel }}</div>
+      </div>
+
+      <div style="padding:2px 18px 0;display:flex;flex-direction:column;gap:12px">
+
+        <sc-if value="{{ showWelcome }}" hint-placeholder-val="{{ true }}">
+          <div style="background:#FFFFFF;border-radius:16px;padding:20px;border:1px solid #DAD4C3;animation:fadeUp 0.35s ease">
+            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;margin-bottom:7px;color:#A6332A">Elite está de vuelta</div>
+            <div style="font-size:17px;font-weight:600;margin-bottom:6px;line-height:1.3">Tu cupón de bienvenida</div>
+            <div style="font-size:13px;color:#77736A;line-height:1.55;margin-bottom:14px">Relanzamos Elite para el Día de la Madre. Por ser parte de la base, tenés un beneficio de bienvenida para tu próxima compra.</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;background:#F3EEE2;border:1px dashed #DAD4C3;border-radius:8px;padding:11px 14px;margin-bottom:14px">
+              <span style="font-size:13px;letter-spacing:0.1em;font-weight:700">ELITE15</span>
+              <span style="font-size:10px;color:#77736A">15% OFF · vence en 30 días</span>
+            </div>
+            <button onClick="{{ activateWelcome }}" style="display:block;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:{{ welcomeBtnBg }};color:{{ welcomeBtnFg }};transition:all 0.25s ease">{{ welcomeBtnText }}</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showProfile }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#FFFFFF;border-radius:16px;padding:20px;border:1px solid #DAD4C3;animation:fadeUp 0.35s ease">
+            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;margin-bottom:7px;color:#ACA9A0">Completá tu perfil</div>
+            <div style="font-size:17px;font-weight:600;margin-bottom:6px;line-height:1.3">{{ profileTitle }}</div>
+            <div style="font-size:13px;color:#77736A;line-height:1.55;margin-bottom:14px">{{ profileBody }}</div>
+            <button onClick="{{ completeProfile }}" style="display:block;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:{{ profileBtnBg }};color:{{ profileBtnFg }};transition:all 0.25s ease">{{ profileBtnText }}</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showVip }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#1C1A17;color:#FFFFFF;border-radius:16px;padding:20px;border:1px solid #1C1A17;animation:fadeUp 0.35s ease">
+            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;margin-bottom:7px;color:#C9A860">Acceso anticipado</div>
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:21px;margin-bottom:6px;line-height:1.25">Lo mejor para mamá, 24 hs antes</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.55;margin-bottom:14px">Por ser Diamante, entrás primero a la selección especial del Día de la Madre, antes que el resto de la base.</div>
+            <button onClick="{{ openVip }}" style="display:block;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:#C9A860;color:#1C1A17">Comprar ahora</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showCrossSell }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#FFFFFF;border-radius:16px;padding:20px;border:1px solid #DAD4C3;animation:fadeUp 0.35s ease">
+            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;margin-bottom:7px;color:#A6332A">Un mimo para vos</div>
+            <div style="font-size:17px;font-weight:600;margin-bottom:6px;line-height:1.3">Un regalo para mamá, y un mimo para vos</div>
+            <div style="font-size:13px;color:#77736A;line-height:1.55;margin-bottom:14px">Gracias por elegir Rouge para el regalo de mamá. Como socia Elite, tenés un beneficio exclusivo en Skincare y Maquillaje.</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;background:#F3EEE2;border:1px dashed #DAD4C3;border-radius:8px;padding:11px 14px;margin-bottom:14px">
+              <span style="font-size:13px;letter-spacing:0.1em;font-weight:700">MIMO20</span>
+              <span style="font-size:10px;color:#77736A">20% OFF · vence en 14 días</span>
+            </div>
+            <button onClick="{{ activateCross }}" style="display:block;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:{{ crossBtnBg }};color:{{ crossBtnFg }};transition:all 0.25s ease">{{ crossBtnText }}</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showReferral }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#FFFFFF;border-radius:16px;padding:20px;border:1px solid #DAD4C3;animation:fadeUp 0.35s ease">
+            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;margin-bottom:7px;color:#A5834C">Programa de referidos</div>
+            <div style="font-size:17px;font-weight:600;margin-bottom:6px;line-height:1.3">Referí a un amigo y llevate 200 pts</div>
+            <div style="font-size:13px;color:#77736A;line-height:1.55;margin-bottom:14px">Compartí tu link. Cuando tu amigo se una al Club Elite, ambos ganan.</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;background:#F3EEE2;border:1px dashed #DAD4C3;border-radius:8px;padding:11px 14px;margin-bottom:14px">
+              <span style="font-size:12px;letter-spacing:0.04em;font-weight:700">rouge.com/r/VALEN24</span>
+              <span style="font-size:10px;color:#77736A">tu link</span>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button onClick="{{ copyReferral }}" style="flex:1;background:#FFFFFF;color:#171512;border:1px solid #171512;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit">{{ copyBtnText }}</button>
+              <button onClick="{{ shareReferral }}" style="flex:1;background:#171512;color:#FFFFFF;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit">Compartir</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showReactivation }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#FFFFFF;border-radius:16px;padding:20px;border:1px solid #DAD4C3;animation:fadeUp 0.35s ease">
+            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;margin-bottom:7px;color:#77736A">Te extrañamos</div>
+            <div style="font-size:17px;font-weight:600;margin-bottom:6px;line-height:1.3">Un regalo para volver a vernos</div>
+            <div style="font-size:13px;color:#77736A;line-height:1.55;margin-bottom:14px">Hace tiempo que no nos visitás. Para este Día de la Madre, reactivamos tu estatus Privé con un beneficio de bienvenida.</div>
+            <button onClick="{{ activateReact }}" style="display:block;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:{{ reactBtnBg }};color:{{ reactBtnFg }};transition:all 0.25s ease">{{ reactBtnText }}</button>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="padding:10px 24px 0;margin-top:8px">
+        <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;text-align:center;margin-bottom:9px">Beneficios de tu categoría</div>
+        <ul style="margin:0;padding:0 0 0 18px;font-size:12.5px;color:#171512;line-height:1.9">
+          <sc-for list="{{ benefits }}" as="b" hint-placeholder-count="3">
+            <li>{{ b }}</li>
+          </sc-for>
+        </ul>
+      </div>
+
+      <sc-if value="{{ showPoweredBy }}" hint-placeholder-val="{{ true }}">
+        <div style="text-align:center;font-size:10px;color:#77736A;letter-spacing:0.1em;margin-top:26px;padding-bottom:30px">Powered by Qurable</div>
+      </sc-if>
+
+      <div style="position:sticky;bottom:18px;display:flex;justify-content:center;pointer-events:none;height:0;overflow:visible">
+        <div style="background:#171512;color:#FFFFFF;font-size:12px;padding:10px 20px;border-radius:20px;white-space:nowrap;transition:all 0.25s ease;transform:translateY({{ toastY }}px);opacity:{{ toastOpacity }};margin-top:-42px">{{ toastMsg }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;memberName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Valentina&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showCanal&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showPoweredBy&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { journey: 'j1', tier: 'premiere', act: {}, profileDone: false, copied: false, toast: '', toastOn: false };
+
+  TIERS = {
+    nueva:    { label: 'BIENVENIDA', color: '#77736A', points: 0,     next: 100,   nextLabel: 'Completá tu perfil para sumar 100 pts' },
+    premiere: { label: 'PREMIERE',   color: '#A6332A', points: 1240,  next: 3000,  nextLabel: '1.760 pts para pasar a Privé' },
+    prive:    { label: 'PRIVÉ',      color: '#ACA9A0', points: 3450,  next: 6500,  nextLabel: '3.050 pts para pasar a Oro' },
+    oro:      { label: 'ORO',        color: '#A5834C', points: 7120,  next: 14400, nextLabel: '7.280 pts para pasar a Diamante' },
+    diamante: { label: 'DIAMANTE',   color: '#1C1A17', points: 15800, next: 15800, nextLabel: 'Nivel máximo alcanzado' },
+    inactiva: { label: 'PRIVÉ',      color: '#ACA9A0', points: 2100,  next: 6500,  nextLabel: 'Hace 8 meses que no comprás' }
+  };
+  TIER_NAMES = { nueva: 'Bienvenida', premiere: 'Premiere', prive: 'Privé', oro: 'Oro', diamante: 'Diamante', inactiva: 'Privé — inactiva' };
+
+  JOURNEYS = {
+    j1: { num: 'J1', name: 'Relanzamiento Elite', tier: 'premiere', canal: { type: 'Email', subject: 'Vuelve Elite — tu cupón de bienvenida', body: 'Relanzamos el programa para el Día de la Madre. Entrá al portal y activá tu 15% OFF de bienvenida.' } },
+    j2: { num: 'J2', name: 'Completar perfil', tier: 'nueva', canal: { type: 'WhatsApp', body: 'Hola Valentina, bienvenida a Elite. Completá tu perfil en un minuto y sumá 100 pts a tu cuenta.', time: '10:42' } },
+    j3: { num: 'J3', name: 'Referidos', tier: 'prive', canal: { type: 'Email', subject: 'Referí a un amigo y llevate 200 pts', body: 'Compartí tu link de referido antes del Día de la Madre: cuando tu amigo se sume, ambos ganan puntos.' } },
+    j4: { num: 'J4', name: 'Cross-sell por compra', tier: 'oro', canal: { type: 'WhatsApp', body: 'Gracias por tu compra en Fragancias. Tenés un 20% OFF en Skincare y Maquillaje esperándote en el portal.', time: '18:05' } },
+    j5: { num: 'J5', name: 'Reactivación', tier: 'inactiva', canal: { type: 'Email', subject: 'Te extrañamos — un regalo para volver a vernos', body: 'Hace tiempo que no nos visitás. Reactivamos tu estatus Privé con un beneficio para el Día de la Madre.' } },
+    j6: { num: 'J6', name: 'Early Access VIP', tier: 'diamante', canal: { type: 'Email', subject: 'Diamante: entrás 24 hs antes', body: 'La selección del Día de la Madre abre mañana para todos. Para vos, hoy.' } }
+  };
+
+  BENEFITS = {
+    nueva: ['Acumulás 10% del valor de cada compra en puntos.'],
+    premiere: ['Acumulás 10% del valor de cada compra en puntos.', 'Esta categoría solo permite sumar puntos.'],
+    prive: ['Acumulás 10% del valor de tus compras en puntos.', '10% de descuento por cumpleaños.', 'Hasta 20% de descuento con puntos acumulados.'],
+    oro: ['Acumulás 10% del valor de tus compras en puntos.', '15% de descuento por cumpleaños.', 'Hasta 30% de descuento con puntos acumulados.'],
+    diamante: ['Acumulás 10% del valor de tus compras en puntos.', '20% de descuento por cumpleaños.', 'Hasta 50% de descuento con puntos acumulados.', 'Beneficios exclusivos.'],
+    inactiva: ['Acumulás 10% del valor de tus compras en puntos.', '10% de descuento por cumpleaños.', 'Hasta 20% de descuento con puntos acumulados.']
+  };
+
+  toast(msg) {
+    clearTimeout(this._tt);
+    this.setState({ toast: msg, toastOn: true });
+    this._tt = setTimeout(() => this.setState({ toastOn: false }), 1900);
+  }
+  mark(key, msg) {
+    this.setState(s => ({ act: { ...s.act, [key]: true } }));
+    this.toast(msg);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const j = s.journey ? this.JOURNEYS[s.journey] : null;
+    const tierKey = s.tier;
+    const t = this.TIERS[tierKey];
+    const jKeys = Object.keys(this.JOURNEYS);
+
+    const journeyList = jKeys.map(k => {
+      const jj = this.JOURNEYS[k], active = s.journey === k;
+      return {
+        num: jj.num, name: jj.name, tag: this.TIER_NAMES[jj.tier],
+        bg: active ? '#171512' : '#F9F8F4', fg: active ? '#FFFFFF' : '#33312B',
+        border: active ? '#171512' : '#E4E1D7',
+        numColor: active ? '#C9A860' : '#B3AFA3', tagColor: active ? 'rgba(255,255,255,0.55)' : '#B3AFA3',
+        select: () => this.setState({ journey: k, tier: this.JOURNEYS[k].tier })
+      };
+    });
+    const tierList = Object.keys(this.TIERS).map(k => {
+      const active = !s.journey && s.tier === k;
+      return {
+        label: this.TIER_NAMES[k],
+        bg: active ? '#171512' : '#F6F4EF', fg: active ? '#FFFFFF' : '#33312B', border: active ? '#171512' : '#DBD7CC',
+        select: () => this.setState({ journey: null, tier: k })
+      };
+    });
+
+    const idx = s.journey ? jKeys.indexOf(s.journey) : -1;
+    const go = i => { const k = jKeys[(i + jKeys.length) % jKeys.length]; this.setState({ journey: k, tier: this.JOURNEYS[k].tier }); };
+
+    let points = t.points;
+    if (tierKey === 'nueva' && s.profileDone) points += 100;
+    const percent = t.next === t.points ? 100 : Math.min(100, Math.round((points / t.next) * 100));
+    let nextLabel = t.nextLabel;
+    if (tierKey === 'nueva' && s.profileDone) nextLabel = '¡Sumaste tus primeros 100 pts!';
+
+    // card visibility: driven by journey when one is selected, by tier when browsing
+    const byJourney = !!s.journey;
+    const showWelcome = byJourney ? s.journey === 'j1' : false;
+    const showProfile = byJourney ? s.journey === 'j2' : tierKey === 'nueva';
+    const showVip = byJourney ? s.journey === 'j6' : tierKey === 'diamante';
+    const showReactivation = byJourney ? s.journey === 'j5' : tierKey === 'inactiva';
+    const showCrossSell = byJourney ? s.journey === 'j4' : ['premiere', 'prive', 'oro', 'diamante'].includes(tierKey);
+    const showReferral = byJourney ? s.journey === 'j3' : ['premiere', 'prive', 'oro', 'diamante'].includes(tierKey);
+
+    const done = k => !!s.act[k];
+    const btn = (k, idle) => ({
+      bg: done(k) ? '#EDE9DD' : '#171512', fg: done(k) ? '#77736A' : '#FFFFFF',
+      text: done(k) ? 'Beneficio activado ✓' : idle
+    });
+    const w = btn('welcome', 'Activar mi cupón'), c = btn('cross', 'Usar beneficio'), r = btn('react', 'Activar mi beneficio');
+
+    return {
+      journeyList, tierList,
+      prevJourney: () => go(idx < 0 ? 0 : idx - 1),
+      nextJourney: () => go(idx < 0 ? 0 : idx + 1),
+      showCanal: (this.props.showCanal ?? true) && !!j,
+      canalType: j ? j.canal.type : '', canalIsEmail: j && j.canal.type === 'Email', canalIsChat: j && j.canal.type === 'WhatsApp',
+      canalSubject: j ? j.canal.subject : '', canalBody: j ? j.canal.body : '', canalTime: j ? (j.canal.time || '') : '',
+      memberName: this.props.memberName ?? 'Valentina',
+      tierColor: t.color, tierLabel: t.label,
+      pointsDisplay: points.toLocaleString('es-AR'), percent, nextLabel,
+      benefits: this.BENEFITS[tierKey],
+      showWelcome, showProfile, showVip, showReactivation, showCrossSell, showReferral,
+      showPoweredBy: this.props.showPoweredBy ?? true,
+      welcomeBtnBg: w.bg, welcomeBtnFg: w.fg, welcomeBtnText: w.text,
+      activateWelcome: () => { if (!done('welcome')) this.mark('welcome', 'Cupón ELITE15 activado ✓'); },
+      crossBtnBg: c.bg, crossBtnFg: c.fg, crossBtnText: c.text,
+      activateCross: () => { if (!done('cross')) this.mark('cross', 'Beneficio MIMO20 aplicado ✓'); },
+      reactBtnBg: r.bg, reactBtnFg: r.fg, reactBtnText: r.text,
+      activateReact: () => { if (!done('react')) this.mark('react', 'Beneficio de reactivación activado ✓'); },
+      profileTitle: s.profileDone ? 'Perfil completo' : 'Sumá 100 pts en un minuto',
+      profileBody: s.profileDone ? 'Gracias por contarnos más de vos. Ya acreditamos 100 pts de bienvenida en tu cuenta Elite.' : 'Contanos un poco más de vos y sumá puntos de bienvenida a tu cuenta Elite.',
+      profileBtnBg: s.profileDone ? '#EDE9DD' : '#171512', profileBtnFg: s.profileDone ? '#77736A' : '#FFFFFF',
+      profileBtnText: s.profileDone ? '+100 pts acreditados ✓' : 'Completar datos',
+      completeProfile: () => { if (!s.profileDone) { this.setState({ profileDone: true }); this.toast('Sumaste 100 pts ✓'); } },
+      copyBtnText: s.copied ? 'Copiado ✓' : 'Copiar link',
+      copyReferral: () => { this.setState({ copied: true }); this.toast('Link copiado ✓'); setTimeout(() => this.setState({ copied: false }), 2200); },
+      shareReferral: () => this.toast('Abriendo WhatsApp…'),
+      openVip: () => this.toast('Explorando la selección VIP…'),
+      toastMsg: s.toast, toastOpacity: s.toastOn ? 1 : 0, toastY: s.toastOn ? 0 : 12
+    };
+  }
+}
+</script>
+</body>
+</html>
