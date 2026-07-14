@@ -9,7 +9,7 @@
 <x-dc>
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:#E9E6DF;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#171512}a:hover{color:#A6332A}
@@ -49,11 +49,11 @@ a{color:#171512}a:hover{color:#A6332A}
 
     <sc-if value="{{ showCanal }}" hint-placeholder-val="{{ true }}">
       <div style="background:#FFFFFF;border:1px solid #DBD7CC;border-radius:14px;padding:16px 18px;animation:fadeUp 0.3s ease">
-        <div style="font-size:11px;letter-spacing:0.1em;color:#B3AFA3;text-transform:uppercase;font-weight:600;margin-bottom:10px">Paso 3 · Canal (AWS) — {{ canalType }}</div>
+        <div style="font-size:11px;letter-spacing:0.1em;color:#B3AFA3;text-transform:uppercase;font-weight:600;margin-bottom:10px">Paso 3 · Canal — {{ canalType }}</div>
         <sc-if value="{{ canalIsEmail }}" hint-placeholder-val="{{ true }}">
           <div style="border:1px solid #E4E1D7;border-radius:10px;overflow:hidden">
             <div style="background:#F6F4EF;padding:9px 12px;border-bottom:1px solid #E4E1D7;display:flex;align-items:center;gap:8px">
-              <span style="width:24px;height:24px;border-radius:50%;background:#171512;color:#C9A860;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:13px">e</span>
+              <span style="width:24px;height:24px;border-radius:50%;background:#171512;color:#C9A860;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px">e</span>
               <span style="font-size:11px;font-weight:700;color:#33312B">Rouge Elite</span>
               <span style="font-size:10px;color:#B3AFA3;margin-left:auto">ahora</span>
             </div>
@@ -86,23 +86,22 @@ a{color:#171512}a:hover{color:#A6332A}
     </div>
     <div style="max-height:720px;overflow-y:auto;position:relative;background:#F3EEE2;color:#171512">
 
-      <div style="background:#171512;color:#FFFFFF;padding:14px 20px;display:flex;align-items:center;justify-content:space-between">
-        <img src="assets/rouge-light.svg" alt="ROUGE" style="height:13px;display:block">
-        <span style="font-size:10px;letter-spacing:0.26em;font-weight:600;color:#C9A860">ELITE</span>
+      <div style="background:#171512;color:#FFFFFF;padding:16px 20px 14px;display:flex;align-items:center;justify-content:center">
+        <div style="font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.35em">ROUGE</div>
       </div>
 
       <div style="padding:30px 24px 22px;text-align:center">
         <div style="font-size:10px;letter-spacing:0.26em;color:#77736A;font-weight:600;margin-bottom:4px">PROGRAMA DE FIDELIDAD</div>
-        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:44px;line-height:1;margin-bottom:22px">Elite</div>
+        <div style="font-family:'Montserrat',sans-serif;font-weight:500;font-size:38px;line-height:1;margin-bottom:22px">Elite</div>
         <div style="display:flex;justify-content:center;margin-bottom:18px">
           <div style="width:104px;height:104px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#FFFFFF;position:relative;transition:background 0.5s ease;box-shadow:0 10px 28px rgba(23,21,18,0.22);background:{{ tierColor }}">
             <span style="position:absolute;inset:7px;border-radius:50%;border:1px solid rgba(255,255,255,0.4)"></span>
-            <span style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:19px">Elite</span>
+            <span style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:16px">Elite</span>
             <span style="position:absolute;bottom:-9px;font-size:9px;letter-spacing:0.16em;background:#171512;color:#FFFFFF;padding:4px 12px;border-radius:20px;white-space:nowrap;font-weight:600">{{ tierLabel }}</span>
           </div>
         </div>
         <div style="font-size:13px;color:#77736A;margin-bottom:8px">Hola, {{ memberName }}</div>
-        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:46px;line-height:1;margin-bottom:4px">{{ pointsDisplay }}</div>
+        <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:42px;line-height:1;margin-bottom:4px">{{ pointsDisplay }}</div>
         <div style="font-size:10.5px;letter-spacing:0.14em;color:#77736A;text-transform:uppercase;margin-bottom:18px">puntos acumulados</div>
         <div style="height:4px;background:#DAD4C3;border-radius:4px;overflow:hidden;margin-bottom:7px">
           <div style="height:100%;border-radius:4px;transition:width 0.6s ease,background 0.5s ease;width:{{ percent }}%;background:{{ tierColor }}"></div>
@@ -118,7 +117,7 @@ a{color:#171512}a:hover{color:#A6332A}
             <div style="font-size:17px;font-weight:600;margin-bottom:6px;line-height:1.3">Tu cupón de bienvenida</div>
             <div style="font-size:13px;color:#77736A;line-height:1.55;margin-bottom:14px">Relanzamos Elite para el Día de la Madre. Por ser parte de la base, tenés un beneficio de bienvenida para tu próxima compra.</div>
             <div style="display:flex;align-items:center;justify-content:space-between;background:#F3EEE2;border:1px dashed #DAD4C3;border-radius:8px;padding:11px 14px;margin-bottom:14px">
-              <span style="font-size:13px;letter-spacing:0.1em;font-weight:700">ELITE15</span>
+              <span style="font-size:13px;letter-spacing:0.1em;font-weight:700">{{ welcomeCode }}</span>
               <span style="font-size:10px;color:#77736A">15% OFF · vence en 30 días</span>
             </div>
             <button onClick="{{ activateWelcome }}" style="display:block;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:{{ welcomeBtnBg }};color:{{ welcomeBtnFg }};transition:all 0.25s ease">{{ welcomeBtnText }}</button>
@@ -137,7 +136,7 @@ a{color:#171512}a:hover{color:#A6332A}
         <sc-if value="{{ showVip }}" hint-placeholder-val="{{ false }}">
           <div style="background:#1C1A17;color:#FFFFFF;border-radius:16px;padding:20px;border:1px solid #1C1A17;animation:fadeUp 0.35s ease">
             <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;margin-bottom:7px;color:#C9A860">Acceso anticipado</div>
-            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:21px;margin-bottom:6px;line-height:1.25">Lo mejor para mamá, 24 hs antes</div>
+            <div style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:19px;margin-bottom:6px;line-height:1.25">Lo mejor para mamá, 24 hs antes</div>
             <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.55;margin-bottom:14px">Por ser Diamante, entrás primero a la selección especial del Día de la Madre, antes que el resto de la base.</div>
             <button onClick="{{ openVip }}" style="display:block;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:#C9A860;color:#1C1A17">Comprar ahora</button>
           </div>
@@ -149,7 +148,7 @@ a{color:#171512}a:hover{color:#A6332A}
             <div style="font-size:17px;font-weight:600;margin-bottom:6px;line-height:1.3">Un regalo para mamá, y un mimo para vos</div>
             <div style="font-size:13px;color:#77736A;line-height:1.55;margin-bottom:14px">Gracias por elegir Rouge para el regalo de mamá. Como socia Elite, tenés un beneficio exclusivo en Skincare y Maquillaje.</div>
             <div style="display:flex;align-items:center;justify-content:space-between;background:#F3EEE2;border:1px dashed #DAD4C3;border-radius:8px;padding:11px 14px;margin-bottom:14px">
-              <span style="font-size:13px;letter-spacing:0.1em;font-weight:700">MIMO20</span>
+              <span style="font-size:13px;letter-spacing:0.1em;font-weight:700">{{ crossCode }}</span>
               <span style="font-size:10px;color:#77736A">20% OFF · vence en 14 días</span>
             </div>
             <button onClick="{{ activateCross }}" style="display:block;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:{{ crossBtnBg }};color:{{ crossBtnFg }};transition:all 0.25s ease">{{ crossBtnText }}</button>
@@ -204,7 +203,8 @@ a{color:#171512}a:hover{color:#A6332A}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;memberName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Valentina&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showCanal&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showPoweredBy&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
-  state = { journey: 'j1', tier: 'premiere', act: {}, profileDone: false, copied: false, toast: '', toastOn: false };
+  genCode() { let c = ''; for (let i = 0; i < 6; i++) c += Math.floor(Math.random() * 10); return c; }
+  state = { journey: 'j1', tier: 'premiere', act: {}, profileDone: false, copied: false, toast: '', toastOn: false, welcomeCode: this.genCode(), crossCode: this.genCode() };
 
   TIERS = {
     nueva:    { label: 'BIENVENIDA', color: '#77736A', points: 0,     next: 100,   nextLabel: 'Completá tu perfil para sumar 100 pts' },
@@ -308,10 +308,11 @@ class Component extends DCLogic {
       benefits: this.BENEFITS[tierKey],
       showWelcome, showProfile, showVip, showReactivation, showCrossSell, showReferral,
       showPoweredBy: this.props.showPoweredBy ?? true,
+      welcomeCode: s.welcomeCode, crossCode: s.crossCode,
       welcomeBtnBg: w.bg, welcomeBtnFg: w.fg, welcomeBtnText: w.text,
-      activateWelcome: () => { if (!done('welcome')) this.mark('welcome', 'Cupón ELITE15 activado ✓'); },
+      activateWelcome: () => { if (!done('welcome')) this.mark('welcome', `Cupón ${s.welcomeCode} activado ✓`); },
       crossBtnBg: c.bg, crossBtnFg: c.fg, crossBtnText: c.text,
-      activateCross: () => { if (!done('cross')) this.mark('cross', 'Beneficio MIMO20 aplicado ✓'); },
+      activateCross: () => { if (!done('cross')) this.mark('cross', `Beneficio ${s.crossCode} aplicado ✓`); },
       reactBtnBg: r.bg, reactBtnFg: r.fg, reactBtnText: r.text,
       activateReact: () => { if (!done('react')) this.mark('react', 'Beneficio de reactivación activado ✓'); },
       profileTitle: s.profileDone ? 'Perfil completo' : 'Sumá 100 pts en un minuto',
