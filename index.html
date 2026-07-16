@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+<script src="./qrcode.min.js"></script>
 </head>
 <body>
 <x-dc>
@@ -119,9 +120,8 @@ a{color:#171512}a:hover{color:#A6332A}
 
           <!-- Beneficio destacado -->
           <div style="padding:20px 24px 4px">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div style="margin-bottom:12px">
               <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:800">Beneficio generado</div>
-              <span style="font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;background:#FBEAE8;color:#A6332A;border-radius:20px;padding:4px 8px">{{ featuredBenefitSource }}</span>
             </div>
             <div style="background:#FFFFFF;border:1px solid #DAD4C3;border-radius:16px;overflow:hidden">
               <div style="height:118px;background:#E9E1D3;overflow:hidden">
@@ -133,6 +133,30 @@ a{color:#171512}a:hover{color:#A6332A}
                 <div style="font-size:12px;color:#77736A;line-height:1.45;margin-bottom:13px">{{ featuredBenefitBody }}</div>
                 <button onClick="{{ featuredBenefitAction }}" style="display:block;width:100%;border:none;border-radius:10px;padding:12px;background:#171512;color:#FFFFFF;font-family:inherit;font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;font-weight:800;cursor:pointer">{{ featuredBenefitCta }}</button>
               </div>
+            </div>
+          </div>
+
+          <!-- Mis Cupones -->
+          <div style="padding:20px 0 4px">
+            <div style="display:flex;align-items:center;gap:7px;padding:0 20px;margin-bottom:12px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#77736A" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z"/></svg>
+              <span style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700">Mis cupones</span>
+            </div>
+            <div class="no-scrollbar" style="display:flex;gap:10px;overflow-x:auto;padding:0 20px 6px">
+              <sc-for list="{{ couponsList }}" as="cp" hint-placeholder-count="3">
+                <div onClick="{{ cp.action }}" style="cursor:pointer;width:128px;min-width:128px;max-width:128px;background:#FFFFFF;border:1px solid #DAD4C3;border-radius:14px;padding:12px;flex-shrink:0;box-sizing:border-box">
+                  <div style="width:104px;height:104px;background:#F3EEE2;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;overflow:hidden;flex-shrink:0">
+                    <sc-if value="{{ cp.hasImage }}" hint-placeholder-val="{{ false }}">
+                      <img src="{{ cp.image }}" alt="{{ cp.title }}" style="width:104px;height:104px;object-fit:cover;display:block">
+                    </sc-if>
+                    <sc-if value="{{ cp.noImage }}" hint-placeholder-val="{{ true }}">
+                      <span style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;text-align:center;padding:0 6px;color:#171512">{{ cp.pct }}</span>
+                    </sc-if>
+                  </div>
+                  <div style="font-size:11.5px;font-weight:600;margin-bottom:3px;line-height:1.25">{{ cp.title }}</div>
+                  <div style="font-size:9.5px;color:#77736A;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ cp.shortDesc }}</div>
+                </div>
+              </sc-for>
             </div>
           </div>
 
@@ -202,38 +226,6 @@ a{color:#171512}a:hover{color:#A6332A}
             </div>
           </div>
 
-          <!-- Mis Cupones -->
-          <div style="padding:20px 0 4px">
-            <div style="display:flex;align-items:center;gap:7px;padding:0 20px;margin-bottom:12px">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#77736A" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z"/></svg>
-              <span style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700">Mis cupones</span>
-            </div>
-            <div class="no-scrollbar" style="display:flex;gap:10px;overflow-x:auto;padding:0 20px 6px">
-              <sc-for list="{{ couponsList }}" as="cp" hint-placeholder-count="3">
-                <div onClick="{{ cp.action }}" style="cursor:pointer;min-width:128px;background:#FFFFFF;border:1px solid #DAD4C3;border-radius:14px;padding:12px;flex-shrink:0">
-                  <div style="width:100%;aspect-ratio:1;background:#F3EEE2;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:10px">
-                    <span style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;text-align:center;padding:0 6px;color:#171512">{{ cp.pct }}</span>
-                  </div>
-                  <div style="font-size:11.5px;font-weight:600;margin-bottom:3px;line-height:1.25">{{ cp.title }}</div>
-                  <div style="font-size:9.5px;color:#B3AFA3">#{{ cp.code }}</div>
-                </div>
-              </sc-for>
-            </div>
-          </div>
-
-          <!-- Cupones populares -->
-          <div style="padding:14px 0 4px">
-            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700;padding:0 20px;margin-bottom:12px">Cupones populares</div>
-            <div class="no-scrollbar" style="display:flex;gap:10px;overflow-x:auto;padding:0 20px 6px">
-              <sc-for list="{{ popularList }}" as="pp" hint-placeholder-count="3">
-                <div onClick="{{ pp.action }}" style="cursor:pointer;min-width:140px;background:#FFFFFF;border:1px solid #DAD4C3;border-radius:14px;padding:14px;flex-shrink:0">
-                  <span style="display:inline-block;font-size:8.5px;font-weight:700;background:#171512;color:#FFFFFF;padding:3px 8px;border-radius:20px;margin-bottom:11px">{{ pp.tag }}</span>
-                  <div style="font-size:12px;font-weight:600;margin-bottom:8px;line-height:1.3">{{ pp.title }}</div>
-                  <div style="font-size:9.5px;color:#B3AFA3">{{ pp.caption }}</div>
-                </div>
-              </sc-for>
-            </div>
-          </div>
 
 
           <!-- Tiendas -->
@@ -461,80 +453,43 @@ a{color:#171512}a:hover{color:#A6332A}
 
       <!-- ===================== CAJA ===================== -->
       <sc-if value="{{ tab_caja }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:6px 20px 10px">
+        <div style="padding:20px 24px 10px">
 
-          <sc-if value="{{ showCajaId }}" hint-placeholder-val="{{ true }}">
-            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700;margin-bottom:16px">Mostrá esto en caja</div>
-            <div style="background:#FFFFFF;border:1px solid #DAD4C3;border-radius:16px;padding:26px 20px;text-align:center;margin-bottom:20px">
-              <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#171512" stroke-width="1.3" style="margin-bottom:14px">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75ZM6.75 16.5h.75v.75h-.75v-.75ZM16.5 6.75h.75v.75h-.75v-.75ZM13.5 13.5h.75v.75h-.75v-.75ZM13.5 19.5h.75v.75h-.75v-.75ZM19.5 13.5h.75v.75h-.75v-.75ZM19.5 19.5h.75v.75h-.75v-.75ZM16.5 16.5h.75v.75h-.75v-.75Z"/>
-              </svg>
-              <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:24px;letter-spacing:0.08em;margin-bottom:6px">{{ memberId }}</div>
-              <div style="font-size:11.5px;color:#77736A;margin-bottom:16px">{{ tierLabel }} · {{ pointsDisplay }} pts</div>
-              <div style="width:126px;height:126px;margin:0 auto 16px;background:#FFFFFF;border:8px solid #FFFFFF;box-shadow:inset 0 0 0 1px #E4E1D7;position:relative">
-                <div style="position:absolute;inset:0;background:
-                  linear-gradient(#171512,#171512) 0 0/32px 32px no-repeat,
-                  linear-gradient(#FFFFFF,#FFFFFF) 7px 7px/18px 18px no-repeat,
-                  linear-gradient(#171512,#171512) 11px 11px/10px 10px no-repeat,
-                  linear-gradient(#171512,#171512) 94px 0/32px 32px no-repeat,
-                  linear-gradient(#FFFFFF,#FFFFFF) 101px 7px/18px 18px no-repeat,
-                  linear-gradient(#171512,#171512) 105px 11px/10px 10px no-repeat,
-                  linear-gradient(#171512,#171512) 0 94px/32px 32px no-repeat,
-                  linear-gradient(#FFFFFF,#FFFFFF) 7px 101px/18px 18px no-repeat,
-                  linear-gradient(#171512,#171512) 11px 105px/10px 10px no-repeat,
-                  repeating-linear-gradient(90deg,#171512 0 7px,transparent 7px 14px),
-                  repeating-linear-gradient(0deg,transparent 0 9px,#171512 9px 14px,transparent 14px 22px);
-                  background-blend-mode:normal"></div>
-                <div style="position:absolute;left:42px;top:42px;width:10px;height:10px;background:#171512;box-shadow:18px 0 #171512,36px 0 #171512,54px 0 #171512,0 18px #171512,27px 18px #171512,63px 18px #171512,9px 36px #171512,36px 36px #171512,54px 36px #171512,18px 54px #171512,45px 54px #171512,63px 54px #171512,0 72px #171512,27px 72px #171512,54px 72px #171512"></div>
-              </div>
-              <div style="font-size:11.5px;color:#77736A;line-height:1.6">Identificate en caja para sumar puntos en tu próxima compra.</div>
-            </div>
+          <div style="background:#FFFFFF;border-radius:24px;padding:24px;box-shadow:0 10px 24px rgba(23,21,18,0.08);margin-bottom:20px;width:85%;margin-left:auto;margin-right:auto;box-sizing:border-box">
+            <div id="caja-qr" data-value="{{ memberId }}" style="width:100%;aspect-ratio:1;display:block"></div>
+          </div>
 
-            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700;margin-bottom:10px">O canjeá un cupón</div>
-            <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="text-align:center;margin-bottom:22px">
+            <div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#1B2A3C;font-weight:800;margin-bottom:8px">ID de cliente</div>
+            <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:28px;letter-spacing:0.14em;margin-bottom:16px">{{ memberId }}</div>
+            <div style="font-size:13px;color:#77736A">Mostrá este QR al cajero para pagar y aplicar cupones.</div>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid #DAD4C3;border-radius:16px;overflow:hidden">
+            <button onClick="{{ toggleCajaExpanded }}" style="display:flex;align-items:center;gap:10px;width:100%;border:none;background:none;padding:16px;cursor:pointer;font-family:inherit;text-align:left">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#171512" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M20.625 11.505v8.25a1.5 1.5 0 0 1-1.5 1.5H4.875a1.5 1.5 0 0 1-1.5-1.5v-8.25m8.25-6.375A2.625 2.625 0 1 0 9 7.755h2.625m0-2.625v2.625m0-2.625a2.625 2.625 0 1 1 2.625 2.625h-2.625m0 0v13.5M3 11.505h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.622-.504-1.125-1.125-1.125H3c-.621 0-1.125.503-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"/></svg>
+              <span style="flex:1;font-size:14px;font-weight:700;color:#171512">Agregar cupones</span>
+              <sc-if value="{{ cajaHasSelected }}" hint-placeholder-val="{{ true }}">
+                <span style="background:#171512;color:#FFFFFF;font-size:11px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ cajaSelectedCount }}</span>
+              </sc-if>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#77736A" stroke-width="1.8" style="flex-shrink:0;transform:rotate({{ cajaChevronRotate }}deg);transition:transform 0.2s ease"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+            </button>
+            <sc-if value="{{ cajaExpanded }}" hint-placeholder-val="{{ true }}">
               <sc-for list="{{ couponsList }}" as="cp" hint-placeholder-count="3">
-                <button onClick="{{ cp.selectForCaja }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left;border:1px solid #DAD4C3;background:#FFFFFF;border-radius:12px;padding:13px 16px;cursor:pointer;font-family:inherit">
+                <button onClick="{{ cp.toggleSelect }}" style="display:flex;align-items:center;gap:12px;width:100%;border:none;border-top:1px solid #F0EDE4;background:{{ cp.rowBg }};padding:14px 16px;cursor:pointer;font-family:inherit;text-align:left">
+                  <span style="width:22px;height:22px;border-radius:6px;border:1.5px solid {{ cp.checkBorder }};background:{{ cp.checkBg }};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                    <sc-if value="{{ cp.selected }}" hint-placeholder-val="{{ false }}">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                    </sc-if>
+                  </span>
                   <div>
-                    <div style="font-size:12.5px;font-weight:600;margin-bottom:2px">{{ cp.title }}</div>
-                    <div style="font-size:10.5px;color:#B3AFA3">#{{ cp.code }}</div>
+                    <div style="font-size:13px;font-weight:700;color:#171512">{{ cp.title }}</div>
+                    <div style="font-size:11px;color:#77736A;line-height:1.35">{{ cp.shortDesc }}</div>
                   </div>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B3AFA3" stroke-width="1.8" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
                 </button>
               </sc-for>
-            </div>
-          </sc-if>
-
-          <sc-if value="{{ showCajaCoupon }}" hint-placeholder-val="{{ false }}">
-            <button onClick="{{ closeCajaCoupon }}" style="display:flex;align-items:center;gap:6px;border:none;background:none;color:#77736A;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;padding:8px 0;margin-bottom:10px">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>
-              Mostrar mi ID
-            </button>
-            <div style="background:#FFFFFF;border:1px solid #DAD4C3;border-radius:16px;padding:26px 20px;text-align:center;margin-bottom:16px">
-              <div style="font-size:11px;color:#77736A;margin-bottom:6px">{{ redeemTitle }}</div>
-              <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:28px;letter-spacing:0.06em;margin-bottom:14px">{{ redeemCode }}</div>
-              <div style="width:132px;height:132px;margin:0 auto 16px;background:#FFFFFF;border:8px solid #FFFFFF;box-shadow:inset 0 0 0 1px #E4E1D7;position:relative">
-                <div style="position:absolute;inset:0;background:
-                  linear-gradient(#171512,#171512) 0 0/34px 34px no-repeat,
-                  linear-gradient(#FFFFFF,#FFFFFF) 7px 7px/20px 20px no-repeat,
-                  linear-gradient(#171512,#171512) 12px 12px/10px 10px no-repeat,
-                  linear-gradient(#171512,#171512) 98px 0/34px 34px no-repeat,
-                  linear-gradient(#FFFFFF,#FFFFFF) 105px 7px/20px 20px no-repeat,
-                  linear-gradient(#171512,#171512) 110px 12px/10px 10px no-repeat,
-                  linear-gradient(#171512,#171512) 0 98px/34px 34px no-repeat,
-                  linear-gradient(#FFFFFF,#FFFFFF) 7px 105px/20px 20px no-repeat,
-                  linear-gradient(#171512,#171512) 12px 110px/10px 10px no-repeat,
-                  repeating-linear-gradient(90deg,#171512 0 7px,transparent 7px 14px),
-                  repeating-linear-gradient(0deg,transparent 0 9px,#171512 9px 14px,transparent 14px 22px)"></div>
-                <div style="position:absolute;left:44px;top:44px;width:10px;height:10px;background:#171512;box-shadow:18px 0 #171512,36px 0 #171512,54px 0 #171512,0 18px #171512,27px 18px #171512,63px 18px #171512,9px 36px #171512,36px 36px #171512,54px 36px #171512,18px 54px #171512,45px 54px #171512,63px 54px #171512,0 72px #171512,27px 72px #171512,54px 72px #171512"></div>
-              </div>
-              <div style="font-size:12px;color:#77736A;line-height:1.6">Presentá este código en caja para aplicar tu descuento.<br>Válido hasta {{ redeemExpiry }}.</div>
-            </div>
-            <button onClick="{{ downloadReceipt }}" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:#171512;color:#FFFFFF">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
-              Descargar comprobante (PDF)
-            </button>
-          </sc-if>
+            </sc-if>
+          </div>
         </div>
       </sc-if>
 
@@ -630,15 +585,44 @@ a{color:#171512}a:hover{color:#A6332A}
   </div>
 </div>
 </x-dc>
+<script>
+(function () {
+  function drawQR() {
+    var el = document.getElementById('caja-qr');
+    if (!el) return;
+    var value = el.getAttribute('data-value') || '';
+    if (!value || el.getAttribute('data-rendered') === value) return;
+    el.setAttribute('data-rendered', value);
+    var qr = qrcode(0, 'M');
+    qr.addData(value);
+    qr.make();
+    var n = qr.getModuleCount();
+    var cell = 100 / n;
+    var rects = '';
+    for (var r = 0; r < n; r++) {
+      for (var c = 0; c < n; c++) {
+        if (qr.isDark(r, c)) {
+          rects += '<rect x="' + (c * cell).toFixed(3) + '" y="' + (r * cell).toFixed(3) + '" width="' + cell.toFixed(3) + '" height="' + cell.toFixed(3) + '"/>';
+        }
+      }
+    }
+    el.innerHTML = '<svg viewBox="0 0 100 100" width="100%" height="100%" style="display:block">' +
+      '<rect width="100" height="100" fill="#FFFFFF"/><g fill="#171512">' + rects + '</g></svg>';
+  }
+  new MutationObserver(drawQR).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-value'] });
+  document.addEventListener('DOMContentLoaded', drawQR);
+  setInterval(drawQR, 400);
+})();
+</script>
 <script type="text/x-dc" data-dc-script data-props="{&quot;memberName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Valentina&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showCanal&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showPoweredBy&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
   genCode() { let c = ''; for (let i = 0; i < 6; i++) c += Math.floor(Math.random() * 10); return c; }
   genId() { const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let s = ''; for (let i = 0; i < 6; i++) s += chars[Math.floor(Math.random() * chars.length)]; return s; }
 
   state = {
-    story: 'purchase', journey: 'j4', tier: 'premiere', act: {}, copied: false, toast: '', toastOn: false,
+    story: 'purchase', journey: 'j4', tier: 'premiere', copied: false, toast: '', toastOn: false,
     welcomeCode: this.genCode(), crossCode: this.genCode(), reactCode: this.genCode(), memberId: this.genId(),
-    tab: 'inicio', redeeming: null,
+    tab: 'inicio', cajaSelected: {}, cajaExpanded: false,
     missions: {
       profile: { status: 'none', progress: 0 }, referral: { status: 'none', progress: 0 },
       social: { status: 'none', progress: 0 }, buy2: { status: 'none', progress: 0 }
@@ -676,11 +660,11 @@ class Component extends DCLogic {
   };
   JOURNEY_TAB = { j1: 'recompensas', j2: 'inicio', j3: 'inicio', j4: 'inicio', j5: 'recompensas', j6: 'recompensas' };
   STORY_STEPS = [
-    { key: 'purchase', num: '1', title: 'Compra detectada', subtitle: 'Valentina compra una fragancia para regalar', journey: 'j4', tab: 'inicio', redeeming: null },
-    { key: 'benefit', num: '2', title: 'Beneficio disponible', subtitle: 'El portal muestra el cupón de cross-category', journey: 'j4', tab: 'inicio', redeeming: null },
-    { key: 'message', num: '3', title: 'WhatsApp enviado', subtitle: 'Rouge refuerza el beneficio en el canal correcto', journey: 'j4', tab: 'inicio', redeeming: null },
-    { key: 'profile', num: '4', title: 'Perfil enriquecido', subtitle: 'La clienta completa datos y suma puntos', journey: 'j2', tab: 'perfil', redeeming: null },
-    { key: 'checkout', num: '5', title: 'Redención en caja', subtitle: 'El cupón queda listo para mostrar o escanear', journey: 'j4', tab: 'caja', redeeming: 'cross' }
+    { key: 'purchase', num: '1', title: 'Compra detectada', subtitle: 'Valentina compra una fragancia para regalar', journey: 'j4', tab: 'inicio', cajaKey: null },
+    { key: 'benefit', num: '2', title: 'Beneficio disponible', subtitle: 'El portal muestra el cupón de cross-category', journey: 'j4', tab: 'inicio', cajaKey: null },
+    { key: 'message', num: '3', title: 'WhatsApp enviado', subtitle: 'Rouge refuerza el beneficio en el canal correcto', journey: 'j4', tab: 'inicio', cajaKey: null },
+    { key: 'profile', num: '4', title: 'Perfil enriquecido', subtitle: 'La clienta completa datos y suma puntos', journey: 'j2', tab: 'perfil', cajaKey: null },
+    { key: 'checkout', num: '5', title: 'Redención en caja', subtitle: 'El cupón queda listo para mostrar o escanear', journey: 'j4', tab: 'caja', cajaKey: 'cross' }
   ];
   STORY_CONTEXT = {
     purchase: { title: 'Evento member', body: 'Compra confirmada en categoría Fragancias. La regla ya fue configurada en el manager real.', tag1: 'Fragancias', tag2: 'Premier' },
@@ -721,7 +705,7 @@ class Component extends DCLogic {
       status: 'beneficio activo',
       times: ['18:07'],
       messages: [
-        'Gracias por tu compra en Fragancias, {{name}}.\n\nTe dejamos un 25% OFF en Skincare y Maquillaje para acompañar tu regalo.\n\n[[IMAGE]]\n\nEl beneficio SKIN25 ya aparece en tu portal Rouge Elite.'
+        'Gracias por tu compra en Fragancias, {{name}}.\n\nTe dejamos un 25% OFF en Skincare y Maquillaje para acompañar tu regalo.\n\n[[IMAGE]]\n\nEl beneficio {{code}} ya aparece en tu portal Rouge Elite.'
       ]
     },
     j5: {
@@ -763,9 +747,9 @@ class Component extends DCLogic {
   };
 
   COUPONS_DEF = [
-    { key: 'welcome', title: 'Cupón de bienvenida', desc: 'Relanzamos Elite para el Día de la Madre. Activá tu beneficio de bienvenida para tu próxima compra.', pct: '15% OFF', expiry: '30 días', codeKey: 'welcomeCode' },
-    { key: 'cross', title: '25% OFF Skincare / Maquillaje', desc: 'Gracias por elegir Rouge para el regalo de mamá. Como socia Elite, tenés un beneficio exclusivo para probar Skincare o Maquillaje.', pct: '25% OFF', expiry: '14 días', codeKey: 'crossCode' },
-    { key: 'react', title: 'Volvé a Privé', desc: 'Hace tiempo que no nos visitás. Reactivamos tu estatus Privé con un beneficio especial para el Día de la Madre.', pct: 'Especial', expiry: '21 días', codeKey: 'reactCode' }
+    { key: 'welcome', title: 'Cupón de bienvenida', desc: 'Relanzamos Elite para el Día de la Madre. Activá tu beneficio de bienvenida para tu próxima compra.', short: '15% OFF en tu próxima compra.', pct: '15% OFF', expiry: '30 días', codeKey: 'welcomeCode' },
+    { key: 'cross', title: '25% OFF Skincare / Maquillaje', desc: 'Gracias por elegir Rouge para el regalo de mamá. Como socia Elite, tenés un beneficio exclusivo para probar Skincare o Maquillaje.', short: 'Probá Skincare o Maquillaje con descuento.', pct: '25% OFF', expiry: '14 días', codeKey: 'crossCode' },
+    { key: 'react', title: 'Volvé a Privé', desc: 'Hace tiempo que no nos visitás. Reactivamos tu estatus Privé con un beneficio especial para el Día de la Madre.', short: 'Beneficio especial Elite.', pct: 'Especial', expiry: '21 días', codeKey: 'reactCode' }
   ];
 
   POPULAR_DEF = [
@@ -816,10 +800,6 @@ class Component extends DCLogic {
     this.setState({ toast: msg, toastOn: true });
     this._tt = setTimeout(() => this.setState({ toastOn: false }), 1900);
   }
-  mark(key, msg) {
-    this.setState(s => ({ act: { ...s.act, [key]: true } }));
-    this.toast(msg);
-  }
   goTab(tab) {
     this.setState({ tab, trivaOpen: false });
   }
@@ -851,14 +831,15 @@ class Component extends DCLogic {
       };
     });
 
-    const selectStory = step => this.setState({
+    const selectStory = step => this.setState(prev => ({
       story: step.key,
       journey: step.journey,
       tier: this.JOURNEYS[step.journey].tier,
       tab: step.tab,
-      redeeming: step.redeeming,
+      cajaSelected: step.cajaKey ? { ...prev.cajaSelected, [step.cajaKey]: true } : prev.cajaSelected,
+      cajaExpanded: step.cajaKey ? true : prev.cajaExpanded,
       trivaOpen: false
-    });
+    }));
     const storyList = this.STORY_STEPS.map(step => {
       const active = s.story === step.key;
       return {
@@ -889,21 +870,23 @@ class Component extends DCLogic {
     const profileClaimed = s.missions.profile.status === 'claimed';
     const nextLabel = tierKey === 'nueva' && profileClaimed ? '¡Sumaste tus primeros 100 pts!' : t.nextLabel;
     const whatsAppDef = this.WHATSAPP_DEF[s.journey || 'default'] || this.WHATSAPP_DEF.default;
-    const fillWhatsApp = text => text.split('{{name}}').join(displayName).split('{{points}}').join(pointsText).split('{{tier}}').join(t.label);
+    const CODE_BY_JOURNEY = { j1: 'welcomeCode', j4: 'crossCode', j5: 'reactCode' };
+    const journeyCode = s.journey && CODE_BY_JOURNEY[s.journey] ? s[CODE_BY_JOURNEY[s.journey]] : '';
+    const fillWhatsApp = text => text.split('{{name}}').join(displayName).split('{{points}}').join(pointsText).split('{{tier}}').join(t.label).split('{{code}}').join(journeyCode);
     const openBenefitFromWhatsApp = () => {
-      this.setState({ story: 'benefit', journey: 'j4', tier: 'premiere', tab: 'inicio', redeeming: null, trivaOpen: false });
+      this.setState({ story: 'benefit', journey: 'j4', tier: 'premiere', tab: 'inicio', trivaOpen: false });
       this.toast('Beneficio abierto en Portal Elite');
     };
     const openCouponFromWhatsApp = () => {
-      this.setState({ story: 'checkout', journey: 'j4', tier: 'premiere', tab: 'caja', redeeming: 'cross', trivaOpen: false });
+      this.setState(prev => ({ story: 'checkout', journey: 'j4', tier: 'premiere', tab: 'caja', cajaSelected: { ...prev.cajaSelected, cross: true }, cajaExpanded: true, trivaOpen: false }));
       this.toast('Cupón listo para mostrar en caja');
     };
     const openProfileFromWhatsApp = () => {
-      this.setState({ story: 'profile', journey: 'j2', tier: 'nueva', tab: 'perfil', redeeming: null, trivaOpen: false });
+      this.setState({ story: 'profile', journey: 'j2', tier: 'nueva', tab: 'perfil', trivaOpen: false });
       this.toast('Perfil abierto');
     };
     const openPortalFromWhatsApp = () => {
-      this.setState({ tab: 'inicio', redeeming: null, trivaOpen: false });
+      this.setState({ tab: 'inicio', trivaOpen: false });
       this.toast('Portal Elite abierto');
     };
     const whatsAppActions = s.story === 'profile'
@@ -965,37 +948,48 @@ class Component extends DCLogic {
     const ledgerPreview = ledgerList.slice(0, 3);
 
     // ---- coupons (assigned + claimed populares) ----
-    const couponDone = key => !!s.act[key];
-    const redeemAndShow = (key, code) => {
-      if (!couponDone(key)) this.mark(key, `Cupón ${code} canjeado ✓`);
-      this.setState({ redeeming: key, tab: 'caja' });
+    const IMAGE_BY_COUPON = { welcome: 'assets/cupon2.png', cross: 'assets/cupon3.png', react: 'assets/prive.png' };
+    const isCajaSelected = key => !!s.cajaSelected[key];
+    const applyCoupon = (key, code) => {
+      if (!isCajaSelected(key)) this.toast(`Cupón ${code} agregado a Caja ✓`);
+      this.setState(prev => ({ cajaSelected: { ...prev.cajaSelected, [key]: true }, cajaExpanded: true, tab: 'caja' }));
     };
+    const toggleCajaSelect = key => this.setState(prev => ({ cajaSelected: { ...prev.cajaSelected, [key]: !prev.cajaSelected[key] } }));
+    const couponRowFields = key => ({
+      selected: isCajaSelected(key),
+      rowBg: isCajaSelected(key) ? '#F3EEE2' : '#FFFFFF',
+      checkBorder: isCajaSelected(key) ? '#171512' : '#DBD7CC',
+      checkBg: isCajaSelected(key) ? '#171512' : '#FFFFFF',
+      toggleSelect: () => toggleCajaSelect(key)
+    });
     const baseCoupons = this.COUPONS_DEF.map(cdef => {
       const code = s[cdef.codeKey];
-      const doneFlag = couponDone(cdef.key);
+      const image = IMAGE_BY_COUPON[cdef.key] || null;
       return {
-        key: cdef.key, title: cdef.title, desc: cdef.desc, pct: cdef.pct, expiry: cdef.expiry, code,
-        btnBg: doneFlag ? '#EDE9DD' : '#171512', btnFg: doneFlag ? '#77736A' : '#FFFFFF',
-        btnText: doneFlag ? 'Ver en Caja' : 'Canjear',
-        action: () => redeemAndShow(cdef.key, code),
-        selectForCaja: () => this.setState({ redeeming: cdef.key })
+        key: cdef.key, title: cdef.title, desc: cdef.desc, shortDesc: cdef.short, pct: cdef.pct, expiry: cdef.expiry, code,
+        image, hasImage: !!image, noImage: !image,
+        btnBg: isCajaSelected(cdef.key) ? '#EDE9DD' : '#171512', btnFg: isCajaSelected(cdef.key) ? '#77736A' : '#FFFFFF',
+        btnText: isCajaSelected(cdef.key) ? 'Ver en Caja' : 'Canjear',
+        action: () => applyCoupon(cdef.key, code),
+        ...couponRowFields(cdef.key)
       };
     });
     const claimedPopularCoupons = Object.keys(s.claimedPopular).map(pkey => {
       const pdef = this.POPULAR_DEF.find(p => p.key === pkey);
       const code = s.claimedPopular[pkey];
-      const doneFlag = couponDone(pkey);
       return {
-        key: pkey, title: pdef.title, desc: pdef.desc, pct: pdef.pct, expiry: pdef.expiry, code,
-        btnBg: doneFlag ? '#EDE9DD' : '#171512', btnFg: doneFlag ? '#77736A' : '#FFFFFF',
-        btnText: doneFlag ? 'Ver en Caja' : 'Canjear',
-        action: () => redeemAndShow(pkey, code),
-        selectForCaja: () => this.setState({ redeeming: pkey })
+        key: pkey, title: pdef.title, desc: pdef.desc, shortDesc: pdef.desc, pct: pdef.pct, expiry: pdef.expiry, code,
+        image: null, hasImage: false, noImage: true,
+        btnBg: isCajaSelected(pkey) ? '#EDE9DD' : '#171512', btnFg: isCajaSelected(pkey) ? '#77736A' : '#FFFFFF',
+        btnText: isCajaSelected(pkey) ? 'Ver en Caja' : 'Canjear',
+        action: () => applyCoupon(pkey, code),
+        ...couponRowFields(pkey)
       };
     });
     const couponsList = [...baseCoupons, ...claimedPopularCoupons];
     const couponLookup = key => couponsList.find(c => c.key === key);
     const featuredCoupon = couponLookup('cross');
+    const cajaSelectedCount = couponsList.filter(c => c.selected).length;
 
     // ---- cupones populares ----
     const popularList = this.POPULAR_DEF.map(pdef => {
@@ -1003,7 +997,7 @@ class Component extends DCLogic {
       return {
         tag: pdef.tag, title: pdef.title, caption: claimed ? 'Ya en tus cupones' : pdef.caption,
         action: () => {
-          if (claimed) { redeemAndShow(pdef.key, s.claimedPopular[pdef.key]); return; }
+          if (claimed) { applyCoupon(pdef.key, s.claimedPopular[pdef.key]); return; }
           const code = this.genCode();
           this.setState(prev => ({ claimedPopular: { ...prev.claimedPopular, [pdef.key]: code } }));
           this.toast('Cupón sumado a Mis cupones ✓');
@@ -1092,9 +1086,6 @@ class Component extends DCLogic {
     });
     const isLastQ = qidx === TQ.length - 1;
 
-    // ---- caja detail ----
-    const redeemDef = s.redeeming ? couponLookup(s.redeeming) : null;
-
     // ---- nav colors ----
     const activeColor = '#171512', idleColor = '#B3AFA3';
 
@@ -1113,13 +1104,12 @@ class Component extends DCLogic {
       cardBg: cardStyle.bg, cardFg: cardStyle.fg, cardText: cardStyle.text, cardMuted: cardStyle.muted,
       cardAccent: cardStyle.accent, cardPillBg: cardStyle.pillBg, cardPillBorder: cardStyle.pillBorder, cardLine: cardStyle.line,
       pointsDisplay: pointsText, percent, nextLabel,
-      featuredBenefitSource: s.story === 'purchase' ? 'Compra detectada' : 'Nuevo beneficio',
       featuredBenefitImage: couponImage,
       featuredBenefitTag: featuredCoupon ? featuredCoupon.pct : '25% OFF',
       featuredBenefitTitle: featuredCoupon ? featuredCoupon.title : '25% OFF Skincare / Maquillaje',
       featuredBenefitBody: 'Generado después de tu compra en Fragancias. Usalo para descubrir una rutina de cuidado o maquillaje Rouge.',
       featuredBenefitCta: s.story === 'checkout' ? 'Ver en caja' : 'Ver cupón',
-      featuredBenefitAction: () => redeemAndShow('cross', s.crossCode),
+      featuredBenefitAction: () => applyCoupon('cross', s.crossCode),
       profileFormTitle: profileClaimed ? 'Perfil completo' : 'Guardá tus datos y sumá 100 pts',
       profileFormHelper: profileClaimed ? 'Tu perfil ya está completo. Los 100 pts de bienvenida fueron acreditados en tu cuenta.' : 'Al guardar, acreditamos 100 pts de bienvenida y desbloqueamos la insignia de perfil.',
       profileBadgeText: profileClaimed ? 'Completado' : '+100 pts',
@@ -1150,10 +1140,9 @@ class Component extends DCLogic {
       badgesList, ledgerList, ledgerPreview,
       couponsList, popularList, promotionsList, storesList, missionsList,
 
-      showCajaId: !s.redeeming, showCajaCoupon: !!s.redeeming,
-      redeemTitle: redeemDef ? redeemDef.title : '', redeemCode: redeemDef ? redeemDef.code : '', redeemExpiry: redeemDef ? redeemDef.expiry : '',
-      downloadReceipt: () => this.toast('Comprobante descargado ✓'),
-      closeCajaCoupon: () => this.setState({ redeeming: null }),
+      cajaExpanded: s.cajaExpanded, cajaChevronRotate: s.cajaExpanded ? 180 : 0,
+      cajaSelectedCount, cajaHasSelected: cajaSelectedCount > 0,
+      toggleCajaExpanded: () => this.setState(prev => ({ cajaExpanded: !prev.cajaExpanded })),
 
       trivaActive, trivaFinished, trivaNum: qidx + 1, trivaTotal: TQ.length, trivaQuestion: currentQ.q, trivaOptions,
       trivaShowNext: answered, trivaNextText: isLastQ ? 'Ver resultado' : 'Siguiente pregunta',
