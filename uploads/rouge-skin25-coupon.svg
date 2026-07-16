@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 520" role="img" aria-label="Rouge 25% off en skincare">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f1dfd0"/>
+      <stop offset="0.52" stop-color="#f8efe7"/>
+      <stop offset="1" stop-color="#d7b59e"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c51d1d"/>
+      <stop offset="0.5" stop-color="#7f0508"/>
+      <stop offset="1" stop-color="#e66a4d"/>
+    </linearGradient>
+    <linearGradient id="cream" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7e4d1"/>
+      <stop offset="1" stop-color="#c79870"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#5a160f" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="520" fill="url(#bg)"/>
+  <path d="M-70 420 C190 290 400 580 690 395 C930 242 1115 238 1285 320 C1410 380 1530 350 1680 292 L1680 560 L-70 560 Z" fill="#83120f" opacity="0.7"/>
+  <path d="M1300 -40 C1410 96 1490 238 1680 315 L1680 0 Z" fill="#7f0c0d" opacity="0.88"/>
+  <path d="M-110 360 C20 440 80 508 210 550 L-110 550 Z" fill="#7f0c0d" opacity="0.68"/>
+  <text x="145" y="150" fill="#971018" font-family="Montserrat, Helvetica, Arial, sans-serif" font-size="62" letter-spacing="24">ROUGE</text>
+  <text x="145" y="318" fill="#971018" font-family="Georgia, 'Times New Roman', serif" font-size="150" font-weight="400">25% OFF</text>
+  <text x="150" y="405" fill="#171512" font-family="Montserrat, Helvetica, Arial, sans-serif" font-size="54" letter-spacing="22" font-weight="700">EN SKINCARE</text>
+  <g filter="url(#shadow)">
+    <rect x="965" y="190" width="130" height="244" rx="18" fill="url(#glass)" stroke="#f1caa7" stroke-width="5"/>
+    <rect x="984" y="260" width="92" height="78" fill="#f1dfcf" stroke="#d8a77b" stroke-width="4"/>
+    <rect x="964" y="139" width="134" height="58" rx="8" fill="#171512" stroke="#f0c59e" stroke-width="5"/>
+    <rect x="990" y="114" width="82" height="42" fill="#201916" stroke="#f0c59e" stroke-width="4"/>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="1170" y="225" width="58" height="210" rx="18" fill="#f5ded0" stroke="#e4b58e" stroke-width="4"/>
+    <rect x="1184" y="162" width="30" height="78" rx="15" fill="#fff2e9"/>
+    <rect x="1175" y="210" width="48" height="26" fill="#bd745c"/>
+  </g>
+  <g filter="url(#shadow)">
+    <ellipse cx="1375" cy="394" rx="122" ry="32" fill="#af714b"/>
+    <rect x="1255" y="302" width="240" height="98" rx="16" fill="url(#cream)" stroke="#c79066" stroke-width="4"/>
+    <rect x="1250" y="282" width="250" height="38" rx="16" fill="#9b542c" stroke="#e7c29e" stroke-width="4"/>
+  </g>
+</svg>

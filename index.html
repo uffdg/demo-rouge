@@ -14,188 +14,628 @@
 body{margin:0;background:#E9E6DF;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#171512}a:hover{color:#A6332A}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cardPatternDrift{0%{transform:translate3d(-7px,0,0) skewX(-0.8deg)}50%{transform:translate3d(9px,0,0) skewX(0.8deg)}100%{transform:translate3d(-7px,0,0) skewX(-0.8deg)}}
+.no-scrollbar::-webkit-scrollbar{display:none}
+.no-scrollbar{scrollbar-width:none;-ms-overflow-style:none}
 </style>
 </helmet>
 <div style="min-height:100vh;display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:40px;padding:44px 28px 60px;background:radial-gradient(1200px 600px at 50% -10%, #F1EEE7, #E9E6DF)">
-
-  <!-- ===== PANEL DE DEMO (fuera del portal) ===== -->
-  <div style="width:340px;display:flex;flex-direction:column;gap:14px">
-    <div style="background:#FFFFFF;border:1px solid #DBD7CC;border-radius:14px;padding:18px 18px 16px">
-      <div style="font-size:10px;letter-spacing:0.16em;color:#8A8779;text-transform:uppercase;font-weight:600;margin-bottom:14px">Panel de demo · Qurable — no es parte del portal</div>
-      <div style="font-size:11px;letter-spacing:0.1em;color:#B3AFA3;text-transform:uppercase;font-weight:600;margin-bottom:8px">Journeys MVP · Día de la Madre</div>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        <sc-for list="{{ journeyList }}" as="j" hint-placeholder-count="6">
-          <button onClick="{{ j.select }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1px solid {{ j.border }};background:{{ j.bg }};color:{{ j.fg }};border-radius:10px;padding:9px 12px;cursor:pointer;font-family:inherit;transition:all 0.18s ease" style-hover="border-color:#171512">
-            <span style="font-size:10px;font-weight:700;letter-spacing:0.06em;width:22px;color:{{ j.numColor }}">{{ j.num }}</span>
-            <span style="flex:1;font-size:12.5px;font-weight:600;line-height:1.25">{{ j.name }}</span>
-            <span style="font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:{{ j.tagColor }}">{{ j.tag }}</span>
-          </button>
-        </sc-for>
-      </div>
-      <div style="display:flex;gap:8px;margin-top:12px">
-        <button onClick="{{ prevJourney }}" style="flex:1;border:1px solid #DBD7CC;background:#F6F4EF;color:#33312B;border-radius:8px;padding:8px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit" style-hover="border-color:#171512">← Anterior</button>
-        <button onClick="{{ nextJourney }}" style="flex:1;border:1px solid #171512;background:#171512;color:#FFFFFF;border-radius:8px;padding:8px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit">Siguiente →</button>
-      </div>
-    </div>
-
-    <div style="background:#FFFFFF;border:1px solid #DBD7CC;border-radius:14px;padding:16px 18px">
-      <div style="font-size:11px;letter-spacing:0.1em;color:#B3AFA3;text-transform:uppercase;font-weight:600;margin-bottom:10px">Explorar por categoría</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px">
-        <sc-for list="{{ tierList }}" as="tp" hint-placeholder-count="6">
-          <button onClick="{{ tp.select }}" style="border:1px solid {{ tp.border }};background:{{ tp.bg }};color:{{ tp.fg }};font-size:11px;padding:6px 12px;border-radius:20px;cursor:pointer;font-family:inherit;transition:all 0.18s ease" style-hover="border-color:#171512">{{ tp.label }}</button>
-        </sc-for>
-      </div>
-    </div>
-
-    <sc-if value="{{ showCanal }}" hint-placeholder-val="{{ true }}">
-      <div style="background:#FFFFFF;border:1px solid #DBD7CC;border-radius:14px;padding:16px 18px;animation:fadeUp 0.3s ease">
-        <div style="font-size:11px;letter-spacing:0.1em;color:#B3AFA3;text-transform:uppercase;font-weight:600;margin-bottom:10px">Paso 3 · Canal — {{ canalType }}</div>
-        <sc-if value="{{ canalIsEmail }}" hint-placeholder-val="{{ true }}">
-          <div style="border:1px solid #E4E1D7;border-radius:10px;overflow:hidden">
-            <div style="background:#F6F4EF;padding:9px 12px;border-bottom:1px solid #E4E1D7;display:flex;align-items:center;gap:8px">
-              <span style="width:24px;height:24px;border-radius:50%;background:#171512;color:#C9A860;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px">e</span>
-              <span style="font-size:11px;font-weight:700;color:#33312B">Rouge Elite</span>
-              <span style="font-size:10px;color:#B3AFA3;margin-left:auto">ahora</span>
-            </div>
-            <div style="padding:11px 12px">
-              <div style="font-size:12px;font-weight:700;color:#171512;margin-bottom:3px">{{ canalSubject }}</div>
-              <div style="font-size:11.5px;color:#77736A;line-height:1.5">{{ canalBody }}</div>
-            </div>
-          </div>
-        </sc-if>
-        <sc-if value="{{ canalIsChat }}" hint-placeholder-val="{{ false }}">
-          <div style="background:#E7E2D6;border-radius:10px;padding:12px">
-            <div style="background:#FFFFFF;border-radius:10px 10px 10px 2px;padding:10px 12px;max-width:92%;box-shadow:0 1px 2px rgba(0,0,0,0.08)">
-              <div style="font-size:10.5px;font-weight:700;color:#A6332A;margin-bottom:3px">Rouge Elite</div>
-              <div style="font-size:12px;color:#33312B;line-height:1.5">{{ canalBody }}</div>
-              <div style="font-size:9.5px;color:#B3AFA3;text-align:right;margin-top:4px">{{ canalTime }}</div>
-            </div>
-          </div>
-        </sc-if>
-      </div>
-    </sc-if>
-  </div>
-
   <!-- ===== PORTAL DEL MEMBER (device) ===== -->
   <div style="width:400px;max-width:100%;background:#FFFFFF;border-radius:26px;box-shadow:0 24px 60px rgba(23,21,18,0.18);overflow:hidden;border:1px solid #DBD7CC">
     <div style="background:#F3F1EA;padding:10px 16px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #E4E1D7">
       <span style="width:8px;height:8px;border-radius:50%;background:#E0645A"></span>
       <span style="width:8px;height:8px;border-radius:50%;background:#E0B95A"></span>
       <span style="width:8px;height:8px;border-radius:50%;background:#6FBF73"></span>
-      <span style="margin-left:10px;font-size:11px;color:#8A8779">perfumeriasrouge.com/elite</span>
+      <span style="margin-left:10px;font-size:11px;color:#8A8779">perfumeriasrouge.com/elite/{{ tab }}</span>
     </div>
-    <div style="max-height:720px;overflow-y:auto;position:relative;background:#F3EEE2;color:#171512">
+    <div style="height:740px;overflow:hidden;position:relative;background:#F3EEE2;color:#171512">
+      <div style="position:absolute;inset:0;overflow-y:auto;padding-bottom:78px;box-sizing:border-box">
 
-      <div style="background:#171512;color:#FFFFFF;padding:16px 20px 14px;display:flex;align-items:center;justify-content:center">
-        <div style="font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.35em">ROUGE</div>
+      <div style="height:40px;background:#171512;display:flex;align-items:center;justify-content:center">
+        <img src="assets/rouge-light.svg" alt="ROUGE" style="height:13px;display:block">
       </div>
 
-      <div style="padding:30px 24px 22px;text-align:center">
-        <div style="font-size:10px;letter-spacing:0.26em;color:#77736A;font-weight:600;margin-bottom:4px">PROGRAMA DE FIDELIDAD</div>
-        <div style="font-family:'Montserrat',sans-serif;font-weight:500;font-size:38px;line-height:1;margin-bottom:22px">Elite</div>
-        <div style="display:flex;justify-content:center;margin-bottom:18px">
-          <div style="width:104px;height:104px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#FFFFFF;position:relative;transition:background 0.5s ease;box-shadow:0 10px 28px rgba(23,21,18,0.22);background:{{ tierColor }}">
-            <span style="position:absolute;inset:7px;border-radius:50%;border:1px solid rgba(255,255,255,0.4)"></span>
-            <span style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:16px">Elite</span>
-            <span style="position:absolute;bottom:-9px;font-size:9px;letter-spacing:0.16em;background:#171512;color:#FFFFFF;padding:4px 12px;border-radius:20px;white-space:nowrap;font-weight:600">{{ tierLabel }}</span>
-          </div>
-        </div>
-        <div style="font-size:13px;color:#77736A;margin-bottom:8px">Hola, {{ memberName }}</div>
-        <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:42px;line-height:1;margin-bottom:4px">{{ pointsDisplay }}</div>
-        <div style="font-size:10.5px;letter-spacing:0.14em;color:#77736A;text-transform:uppercase;margin-bottom:18px">puntos acumulados</div>
-        <div style="height:4px;background:#DAD4C3;border-radius:4px;overflow:hidden;margin-bottom:7px">
-          <div style="height:100%;border-radius:4px;transition:width 0.6s ease,background 0.5s ease;width:{{ percent }}%;background:{{ tierColor }}"></div>
-        </div>
-        <div style="font-size:11px;color:#77736A">{{ nextLabel }}</div>
-      </div>
+      <!-- ===================== INICIO ===================== -->
+      <sc-if value="{{ tab_inicio }}" hint-placeholder-val="{{ true }}">
 
-      <div style="padding:2px 18px 0;display:flex;flex-direction:column;gap:12px">
-
-        <sc-if value="{{ showWelcome }}" hint-placeholder-val="{{ true }}">
-          <div style="background:#FFFFFF;border-radius:16px;padding:20px;border:1px solid #DAD4C3;animation:fadeUp 0.35s ease">
-            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;margin-bottom:7px;color:#A6332A">Elite está de vuelta</div>
-            <div style="font-size:17px;font-weight:600;margin-bottom:6px;line-height:1.3">Tu cupón de bienvenida</div>
-            <div style="font-size:13px;color:#77736A;line-height:1.55;margin-bottom:14px">Relanzamos Elite para el Día de la Madre. Por ser parte de la base, tenés un beneficio de bienvenida para tu próxima compra.</div>
-            <div style="display:flex;align-items:center;justify-content:space-between;background:#F3EEE2;border:1px dashed #DAD4C3;border-radius:8px;padding:11px 14px;margin-bottom:14px">
-              <span style="font-size:13px;letter-spacing:0.1em;font-weight:700">{{ welcomeCode }}</span>
-              <span style="font-size:10px;color:#77736A">15% OFF · vence en 30 días</span>
+        <sc-if value="{{ trivaOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:6px 20px 20px">
+            <button onClick="{{ closeTriva }}" style="display:flex;align-items:center;gap:6px;border:none;background:none;color:#77736A;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;padding:8px 0;margin-bottom:6px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>
+              Volver
+            </button>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A6332A" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"/></svg>
+              <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700">Trivia Rouge Elite</div>
             </div>
-            <button onClick="{{ activateWelcome }}" style="display:block;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:{{ welcomeBtnBg }};color:{{ welcomeBtnFg }};transition:all 0.25s ease">{{ welcomeBtnText }}</button>
+
+            <sc-if value="{{ trivaActive }}" hint-placeholder-val="{{ true }}">
+              <div style="font-size:11px;color:#B3AFA3;margin-bottom:8px">Pregunta {{ trivaNum }} de {{ trivaTotal }}</div>
+              <div style="font-size:16px;font-weight:600;line-height:1.35;margin-bottom:16px">{{ trivaQuestion }}</div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+                <sc-for list="{{ trivaOptions }}" as="op" hint-placeholder-count="4">
+                  <button onClick="{{ op.select }}" style="text-align:left;border:1px solid {{ op.border }};background:{{ op.bg }};color:{{ op.fg }};border-radius:10px;padding:12px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">{{ op.text }}</button>
+                </sc-for>
+              </div>
+              <sc-if value="{{ trivaShowNext }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ trivaNext }}" style="display:block;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:#171512;color:#FFFFFF">{{ trivaNextText }}</button>
+              </sc-if>
+            </sc-if>
+
+            <sc-if value="{{ trivaFinished }}" hint-placeholder-val="{{ false }}">
+              <div style="text-align:center;padding:20px 0">
+                <div style="font-size:38px;margin-bottom:10px">🎉</div>
+                <div style="font-size:19px;font-weight:700;margin-bottom:6px">¡Ganaste {{ trivaEarned }} pts!</div>
+                <div style="font-size:13px;color:#77736A;margin-bottom:20px">Respondiste bien {{ trivaScore }} de {{ trivaTotal }} preguntas.</div>
+                <button onClick="{{ trivaReset }}" style="display:inline-block;border:1px solid #171512;border-radius:8px;padding:12px 22px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:#FFFFFF;color:#171512;margin-right:8px">Jugar de nuevo</button>
+                <button onClick="{{ closeTriva }}" style="display:inline-block;border:none;border-radius:8px;padding:12px 22px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:#171512;color:#FFFFFF">Volver al inicio</button>
+              </div>
+            </sc-if>
           </div>
         </sc-if>
 
-        <sc-if value="{{ showProfile }}" hint-placeholder-val="{{ false }}">
-          <div style="background:#FFFFFF;border-radius:16px;padding:20px;border:1px solid #DAD4C3;animation:fadeUp 0.35s ease">
-            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;margin-bottom:7px;color:#ACA9A0">Completá tu perfil</div>
-            <div style="font-size:17px;font-weight:600;margin-bottom:6px;line-height:1.3">{{ profileTitle }}</div>
-            <div style="font-size:13px;color:#77736A;line-height:1.55;margin-bottom:14px">{{ profileBody }}</div>
-            <button onClick="{{ completeProfile }}" style="display:block;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:{{ profileBtnBg }};color:{{ profileBtnFg }};transition:all 0.25s ease">{{ profileBtnText }}</button>
-          </div>
-        </sc-if>
+        <sc-if value="{{ trivaClosed }}" hint-placeholder-val="{{ true }}">
 
-        <sc-if value="{{ showVip }}" hint-placeholder-val="{{ false }}">
-          <div style="background:#1C1A17;color:#FFFFFF;border-radius:16px;padding:20px;border:1px solid #1C1A17;animation:fadeUp 0.35s ease">
-            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;margin-bottom:7px;color:#C9A860">Acceso anticipado</div>
-            <div style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:19px;margin-bottom:6px;line-height:1.25">Lo mejor para mamá, 24 hs antes</div>
-            <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.55;margin-bottom:14px">Por ser Diamante, entrás primero a la selección especial del Día de la Madre, antes que el resto de la base.</div>
-            <button onClick="{{ openVip }}" style="display:block;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:#C9A860;color:#1C1A17">Comprar ahora</button>
-          </div>
-        </sc-if>
-
-        <sc-if value="{{ showCrossSell }}" hint-placeholder-val="{{ false }}">
-          <div style="background:#FFFFFF;border-radius:16px;padding:20px;border:1px solid #DAD4C3;animation:fadeUp 0.35s ease">
-            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;margin-bottom:7px;color:#A6332A">Un mimo para vos</div>
-            <div style="font-size:17px;font-weight:600;margin-bottom:6px;line-height:1.3">Un regalo para mamá, y un mimo para vos</div>
-            <div style="font-size:13px;color:#77736A;line-height:1.55;margin-bottom:14px">Gracias por elegir Rouge para el regalo de mamá. Como socia Elite, tenés un beneficio exclusivo en Skincare y Maquillaje.</div>
-            <div style="display:flex;align-items:center;justify-content:space-between;background:#F3EEE2;border:1px dashed #DAD4C3;border-radius:8px;padding:11px 14px;margin-bottom:14px">
-              <span style="font-size:13px;letter-spacing:0.1em;font-weight:700">{{ crossCode }}</span>
-              <span style="font-size:10px;color:#77736A">20% OFF · vence en 14 días</span>
-            </div>
-            <button onClick="{{ activateCross }}" style="display:block;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:{{ crossBtnBg }};color:{{ crossBtnFg }};transition:all 0.25s ease">{{ crossBtnText }}</button>
-          </div>
-        </sc-if>
-
-        <sc-if value="{{ showReferral }}" hint-placeholder-val="{{ false }}">
-          <div style="background:#FFFFFF;border-radius:16px;padding:20px;border:1px solid #DAD4C3;animation:fadeUp 0.35s ease">
-            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;margin-bottom:7px;color:#A5834C">Programa de referidos</div>
-            <div style="font-size:17px;font-weight:600;margin-bottom:6px;line-height:1.3">Referí a un amigo y llevate 200 pts</div>
-            <div style="font-size:13px;color:#77736A;line-height:1.55;margin-bottom:14px">Compartí tu link. Cuando tu amigo se una al Club Elite, ambos ganan.</div>
-            <div style="display:flex;align-items:center;justify-content:space-between;background:#F3EEE2;border:1px dashed #DAD4C3;border-radius:8px;padding:11px 14px;margin-bottom:14px">
-              <span style="font-size:12px;letter-spacing:0.04em;font-weight:700">rouge.com/r/VALEN24</span>
-              <span style="font-size:10px;color:#77736A">tu link</span>
-            </div>
-            <div style="display:flex;gap:8px">
-              <button onClick="{{ copyReferral }}" style="flex:1;background:#FFFFFF;color:#171512;border:1px solid #171512;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit">{{ copyBtnText }}</button>
-              <button onClick="{{ shareReferral }}" style="flex:1;background:#171512;color:#FFFFFF;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit">Compartir</button>
+          <!-- Membership card -->
+          <div style="padding:20px 24px 8px">
+            <div style="width:100%;height:154px;border-radius:22px;position:relative;overflow:hidden;background:{{ cardBg }};color:{{ cardFg }};box-shadow:0 16px 30px rgba(23,21,18,0.18);transition:background 0.35s ease,color 0.35s ease">
+              <svg viewBox="0 0 360 170" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;inset:-8% -6%;width:112%;height:116%;opacity:0.82;animation:cardPatternDrift 9s ease-in-out infinite;will-change:transform">
+                <g fill="none" stroke="{{ cardLine }}" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="miter" vector-effect="non-scaling-stroke">
+                  <path d="M-34 0 76 85-34 170M394 0 284 85l110 85"/>
+                  <path d="M16 0 126 85 16 170M344 0 234 85l110 85"/>
+                  <path d="M66 0 180 85 294 0M66 170l114-85 114 85"/>
+                  <path d="M112 0 180 51 248 0M112 170l68-51 68 51"/>
+                  <path d="M130 33 180 0l50 33-50 33-50-33Z"/>
+                  <path d="M155 33 180 16l25 17-25 17-25-17Z"/>
+                  <path d="M180 0v66"/>
+                  <path d="M130 137 180 104l50 33-50 33-50-33Z"/>
+                  <path d="M155 137 180 120l25 17-25 17-25-17Z"/>
+                  <path d="M180 104v66"/>
+                  <path d="M-20 33 30 0l50 33-50 33-50-33M280 33 330 0l50 33-50 33-50-33"/>
+                  <path d="M-20 137 30 104l50 33-50 33-50-33M280 137l50-33 50 33-50 33-50-33"/>
+                </g>
+              </svg>
+              <div style="position:absolute;left:28px;top:27px;font-size:18px;font-weight:800;line-height:1;color:{{ cardText }}">{{ memberName }}</div>
+              <div style="position:absolute;left:28px;top:64px;height:26px;border-radius:15px;border:1px solid {{ cardPillBorder }};background:{{ cardPillBg }};color:{{ cardAccent }};display:flex;align-items:center;padding:0 13px;font-size:11px;letter-spacing:0.14em;font-weight:800;text-transform:uppercase">{{ tierLabel }}</div>
+              <div style="position:absolute;left:28px;bottom:26px;display:flex;align-items:flex-end;gap:5px;color:{{ cardText }}">
+                <span style="font-family:'Montserrat',sans-serif;font-size:29px;font-weight:800;line-height:0.9;letter-spacing:0">{{ pointsDisplay }}</span>
+                <span style="font-size:11px;font-weight:800;color:{{ cardMuted }};line-height:1;margin-bottom:2px">PTS</span>
+              </div>
+              <div style="position:absolute;right:28px;bottom:28px;text-align:right;color:{{ cardText }}">
+                <div style="font-size:9px;letter-spacing:0.24em;text-transform:uppercase;font-weight:800;color:{{ cardMuted }};margin-bottom:6px">TU ID</div>
+                <div style="font-size:14px;letter-spacing:0.12em;font-weight:800">{{ memberId }}</div>
+              </div>
             </div>
           </div>
-        </sc-if>
 
-        <sc-if value="{{ showReactivation }}" hint-placeholder-val="{{ false }}">
-          <div style="background:#FFFFFF;border-radius:16px;padding:20px;border:1px solid #DAD4C3;animation:fadeUp 0.35s ease">
-            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;margin-bottom:7px;color:#77736A">Te extrañamos</div>
-            <div style="font-size:17px;font-weight:600;margin-bottom:6px;line-height:1.3">Un regalo para volver a vernos</div>
-            <div style="font-size:13px;color:#77736A;line-height:1.55;margin-bottom:14px">Hace tiempo que no nos visitás. Para este Día de la Madre, reactivamos tu estatus Privé con un beneficio de bienvenida.</div>
-            <button onClick="{{ activateReact }}" style="display:block;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:{{ reactBtnBg }};color:{{ reactBtnFg }};transition:all 0.25s ease">{{ reactBtnText }}</button>
+          <!-- Wallet -->
+          <div style="padding:18px 24px 4px">
+            <div style="font-size:13px;letter-spacing:0.24em;text-transform:uppercase;color:#1B2A3C;font-weight:800;margin-bottom:12px">Wallet</div>
+            <button onClick="{{ addToWallet }}" style="display:flex;align-items:center;justify-content:center;gap:11px;width:100%;height:58px;border:none;border-radius:15px;padding:0;background:#172337;color:#FFFFFF;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit">
+              <svg width="22" height="17" viewBox="0 0 31 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="1" y="1" width="29" height="22" rx="4"/><path d="M6 8h19M6 16h10"/></svg>
+              Agregar a Apple Wallet
+            </button>
           </div>
+
+          <!-- Beneficio destacado -->
+          <div style="padding:20px 24px 4px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+              <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:800">Beneficio generado</div>
+              <span style="font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;background:#FBEAE8;color:#A6332A;border-radius:20px;padding:4px 8px">{{ featuredBenefitSource }}</span>
+            </div>
+            <div style="background:#FFFFFF;border:1px solid #DAD4C3;border-radius:16px;overflow:hidden">
+              <div style="height:118px;background:#E9E1D3;overflow:hidden">
+                <img src="{{ featuredBenefitImage }}" alt="25% OFF en Skincare" style="width:100%;height:100%;object-fit:cover;display:block">
+              </div>
+              <div style="padding:16px">
+                <div style="display:inline-block;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;font-weight:800;background:#F3EEE2;color:#A6332A;border-radius:20px;padding:4px 9px;margin-bottom:9px">{{ featuredBenefitTag }}</div>
+                <div style="font-size:16px;font-weight:800;line-height:1.2;color:#171512;margin-bottom:5px">{{ featuredBenefitTitle }}</div>
+                <div style="font-size:12px;color:#77736A;line-height:1.45;margin-bottom:13px">{{ featuredBenefitBody }}</div>
+                <button onClick="{{ featuredBenefitAction }}" style="display:block;width:100%;border:none;border-radius:10px;padding:12px;background:#171512;color:#FFFFFF;font-family:inherit;font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;font-weight:800;cursor:pointer">{{ featuredBenefitCta }}</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Promociones -->
+          <div style="padding:20px 0 4px">
+            <div style="display:flex;align-items:center;gap:7px;padding:0 20px;margin-bottom:12px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#77736A" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z"/></svg>
+              <span style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700">Promociones</span>
+            </div>
+            <div class="no-scrollbar" style="display:flex;gap:10px;overflow-x:auto;padding:0 20px 6px">
+              <sc-for list="{{ promotionsList }}" as="pr" hint-placeholder-count="4">
+                <div style="min-width:148px;background:{{ pr.bg }};border:1px solid {{ pr.border }};border-radius:14px;padding:14px;flex-shrink:0">
+                  <div style="display:inline-block;font-size:8.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;background:{{ pr.tagBg }};color:{{ pr.tagColor }};padding:3px 8px;border-radius:20px;margin-bottom:12px">{{ pr.tag }}</div>
+                  <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:18px;margin-bottom:3px;color:{{ pr.fg }};line-height:1.15">{{ pr.big }}</div>
+                  <div style="font-size:10.5px;color:{{ pr.descColor }};line-height:1.3">{{ pr.sub }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- Misiones -->
+          <div style="padding:20px 20px 4px">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:12px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#77736A" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z"/></svg>
+              <span style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700">Misiones</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div onClick="{{ openTriva }}" style="cursor:pointer;background:#FFFFFF;border:1px solid #DAD4C3;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+                <div style="width:34px;height:34px;border-radius:10px;background:#F3EEE2;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A6332A" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"/></svg>
+                </div>
+                <div style="flex:1">
+                  <div style="font-size:13.5px;font-weight:600">Trivia Rouge Elite</div>
+                  <div style="font-size:11px;color:#77736A">Jugá 3 preguntas y ganá puntos</div>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B3AFA3" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+              </div>
+
+              <sc-for list="{{ missionsList }}" as="ms" hint-placeholder-count="4">
+                <div style="background:#FFFFFF;border:1px solid #DAD4C3;border-radius:14px;padding:14px 16px">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px">
+                    <div style="font-size:13.5px;font-weight:600;line-height:1.3">{{ ms.title }}</div>
+                    <span style="font-size:9px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;white-space:nowrap;background:{{ ms.statusBg }};color:{{ ms.statusColor }};padding:4px 9px;border-radius:20px">{{ ms.statusLabel }}</span>
+                  </div>
+                  <div style="font-size:10.5px;font-weight:700;color:#A6332A;margin-bottom:8px">{{ ms.reward }}</div>
+                  <sc-if value="{{ ms.showRing }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
+                      <div style="width:30px;height:30px;border-radius:50%;background:conic-gradient(#171512 {{ ms.pct }}%, #E4E1D7 0);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                        <div style="width:22px;height:22px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:7.5px;font-weight:700">{{ ms.stepText }}</div>
+                      </div>
+                      <span style="font-size:11px;color:#77736A">{{ ms.desc }}</span>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ ms.showDesc }}" hint-placeholder-val="{{ true }}">
+                    <div style="font-size:12px;color:#77736A;line-height:1.5;margin-bottom:10px">{{ ms.desc }}</div>
+                  </sc-if>
+                  <sc-if value="{{ ms.showLink }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;align-items:center;justify-content:space-between;background:#F3EEE2;border:1px dashed #DAD4C3;border-radius:8px;padding:10px 14px;margin-bottom:10px">
+                      <span style="font-size:12px;letter-spacing:0.04em;font-weight:700">rouge.com/r/VALEN24</span>
+                      <span style="font-size:10px;color:#77736A">tu link</span>
+                    </div>
+                    <button onClick="{{ ms.copyReferral }}" style="width:100%;background:#FFFFFF;color:#171512;border:1px solid #171512;border-radius:8px;padding:10px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:10px">{{ ms.copyText }}</button>
+                  </sc-if>
+                  <button onClick="{{ ms.action }}" style="display:block;width:100%;border:none;border-radius:8px;padding:11px;font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:{{ ms.btnBg }};color:{{ ms.btnFg }}">{{ ms.btnText }}</button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- Mis Cupones -->
+          <div style="padding:20px 0 4px">
+            <div style="display:flex;align-items:center;gap:7px;padding:0 20px;margin-bottom:12px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#77736A" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z"/></svg>
+              <span style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700">Mis cupones</span>
+            </div>
+            <div class="no-scrollbar" style="display:flex;gap:10px;overflow-x:auto;padding:0 20px 6px">
+              <sc-for list="{{ couponsList }}" as="cp" hint-placeholder-count="3">
+                <div onClick="{{ cp.action }}" style="cursor:pointer;min-width:128px;background:#FFFFFF;border:1px solid #DAD4C3;border-radius:14px;padding:12px;flex-shrink:0">
+                  <div style="width:100%;aspect-ratio:1;background:#F3EEE2;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:10px">
+                    <span style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;text-align:center;padding:0 6px;color:#171512">{{ cp.pct }}</span>
+                  </div>
+                  <div style="font-size:11.5px;font-weight:600;margin-bottom:3px;line-height:1.25">{{ cp.title }}</div>
+                  <div style="font-size:9.5px;color:#B3AFA3">#{{ cp.code }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- Cupones populares -->
+          <div style="padding:14px 0 4px">
+            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700;padding:0 20px;margin-bottom:12px">Cupones populares</div>
+            <div class="no-scrollbar" style="display:flex;gap:10px;overflow-x:auto;padding:0 20px 6px">
+              <sc-for list="{{ popularList }}" as="pp" hint-placeholder-count="3">
+                <div onClick="{{ pp.action }}" style="cursor:pointer;min-width:140px;background:#FFFFFF;border:1px solid #DAD4C3;border-radius:14px;padding:14px;flex-shrink:0">
+                  <span style="display:inline-block;font-size:8.5px;font-weight:700;background:#171512;color:#FFFFFF;padding:3px 8px;border-radius:20px;margin-bottom:11px">{{ pp.tag }}</span>
+                  <div style="font-size:12px;font-weight:600;margin-bottom:8px;line-height:1.3">{{ pp.title }}</div>
+                  <div style="font-size:9.5px;color:#B3AFA3">{{ pp.caption }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- Contenido -->
+          <div style="padding:14px 0 4px">
+            <div style="display:flex;align-items:center;gap:7px;padding:0 20px;margin-bottom:12px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#77736A" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z"/></svg>
+              <span style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700">Contenido para vos</span>
+            </div>
+            <div class="no-scrollbar" style="display:flex;gap:12px;overflow-x:auto;padding:0 20px 6px">
+              <sc-for list="{{ contentList }}" as="ct" hint-placeholder-count="4">
+                <div style="min-width:200px;height:140px;border-radius:14px;background:{{ ct.bg }};padding:16px;display:flex;flex-direction:column;justify-content:flex-end;color:#FFFFFF;flex-shrink:0">
+                  <div style="font-size:13px;font-weight:700;margin-bottom:4px;line-height:1.25">{{ ct.title }}</div>
+                  <div style="font-size:10.5px;opacity:0.85;line-height:1.4">{{ ct.blurb }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- Tiendas -->
+          <div style="padding:14px 20px 4px">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:12px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#77736A" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+              <span style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700">Tiendas cercanas</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ storesList }}" as="st" hint-placeholder-count="4">
+                <div style="background:#FFFFFF;border:1px solid #DAD4C3;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A6332A" stroke-width="1.8" style="margin-top:2px;flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+                  <div style="flex:1">
+                    <div style="font-size:12.5px;font-weight:600;margin-bottom:2px">{{ st.name }}</div>
+                    <div style="font-size:11px;color:#77736A;margin-bottom:2px">{{ st.addr }}</div>
+                    <div style="font-size:10px;color:#B3AFA3">{{ st.hours }} · {{ st.dist }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- Historial preview -->
+          <div style="padding:16px 20px 4px">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#77736A" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+              <span style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700">Historial de puntos</span>
+            </div>
+            <sc-for list="{{ ledgerPreview }}" as="l" hint-placeholder-count="3">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #E4E1D7">
+                <div>
+                  <div style="font-size:12.5px;font-weight:600;color:#171512;margin-bottom:2px">{{ l.label }}</div>
+                  <div style="font-size:10.5px;color:#B3AFA3">{{ l.date }}</div>
+                </div>
+                <div style="font-size:12.5px;font-weight:700;color:{{ l.color }};white-space:nowrap;margin-left:12px">{{ l.deltaText }}</div>
+              </div>
+            </sc-for>
+            <button onClick="{{ goPerfil }}" style="width:100%;border:none;background:none;color:#A6332A;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;padding:12px 0 4px;text-align:center">Ver historial completo →</button>
+          </div>
+
         </sc-if>
-      </div>
-
-      <div style="padding:10px 24px 0;margin-top:8px">
-        <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;text-align:center;margin-bottom:9px">Beneficios de tu categoría</div>
-        <ul style="margin:0;padding:0 0 0 18px;font-size:12.5px;color:#171512;line-height:1.9">
-          <sc-for list="{{ benefits }}" as="b" hint-placeholder-count="3">
-            <li>{{ b }}</li>
-          </sc-for>
-        </ul>
-      </div>
-
-      <sc-if value="{{ showPoweredBy }}" hint-placeholder-val="{{ true }}">
-        <div style="text-align:center;font-size:10px;color:#77736A;letter-spacing:0.1em;margin-top:26px;padding-bottom:30px">Powered by Qurable</div>
       </sc-if>
 
-      <div style="position:sticky;bottom:18px;display:flex;justify-content:center;pointer-events:none;height:0;overflow:visible">
+      <!-- ===================== RECOMPENSAS ===================== -->
+      <sc-if value="{{ tab_recompensas }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:6px 20px 4px">
+          <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700;margin-bottom:14px">Recompensas</div>
+        </div>
+
+        <div style="padding:0 20px 4px;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:700;color:#171512">Mis cupones</div>
+          <sc-for list="{{ couponsList }}" as="cp" hint-placeholder-count="3">
+            <div style="background:#FFFFFF;border-radius:16px;padding:18px;border:1px solid #DAD4C3">
+              <div style="font-size:15px;font-weight:600;margin-bottom:4px">{{ cp.title }}</div>
+              <div style="font-size:12.5px;color:#77736A;line-height:1.5;margin-bottom:12px">{{ cp.desc }}</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;background:#F3EEE2;border:1px dashed #DAD4C3;border-radius:8px;padding:10px 14px;margin-bottom:12px">
+                <span style="font-size:13px;letter-spacing:0.1em;font-weight:700">{{ cp.code }}</span>
+                <span style="font-size:10px;color:#77736A;text-align:right">{{ cp.pct }} · vence en {{ cp.expiry }}</span>
+              </div>
+              <button onClick="{{ cp.action }}" style="display:block;width:100%;border:none;border-radius:8px;padding:12px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:{{ cp.btnBg }};color:{{ cp.btnFg }}">{{ cp.btnText }}</button>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="padding:20px 20px 4px;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:700;color:#171512">Cupones populares</div>
+          <sc-for list="{{ popularList }}" as="pp" hint-placeholder-count="3">
+            <div onClick="{{ pp.action }}" style="cursor:pointer;background:#FFFFFF;border-radius:16px;padding:16px 18px;border:1px solid #DAD4C3;display:flex;justify-content:space-between;align-items:center;gap:10px">
+              <div>
+                <span style="display:inline-block;font-size:8.5px;font-weight:700;background:#171512;color:#FFFFFF;padding:3px 8px;border-radius:20px;margin-bottom:8px">{{ pp.tag }}</span>
+                <div style="font-size:13px;font-weight:600;margin-bottom:2px">{{ pp.title }}</div>
+                <div style="font-size:10.5px;color:#B3AFA3">{{ pp.caption }}</div>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B3AFA3" stroke-width="1.8" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="padding:20px 20px 4px;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:700;color:#171512">Promociones activas</div>
+          <sc-for list="{{ promotionsList }}" as="pr" hint-placeholder-count="4">
+            <div style="background:{{ pr.bg }};color:{{ pr.fg }};border-radius:16px;padding:18px;border:1px solid {{ pr.border }}">
+              <div style="display:inline-block;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;background:{{ pr.tagBg }};color:{{ pr.tagColor }};padding:3px 9px;border-radius:20px;margin-bottom:10px">{{ pr.tag }}</div>
+              <div style="font-size:16px;font-weight:700;margin-bottom:2px">{{ pr.big }}</div>
+              <div style="font-size:12px;color:{{ pr.descColor }};margin-bottom:10px">{{ pr.sub }}</div>
+              <div style="font-size:12.5px;line-height:1.55;margin-bottom:14px;color:{{ pr.descColor }}">{{ pr.desc }}</div>
+              <button onClick="{{ pr.action }}" style="display:block;width:100%;border:none;border-radius:8px;padding:12px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:{{ pr.btnBg }};color:{{ pr.btnFg }}">{{ pr.cta }}</button>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- ===================== PERFIL ===================== -->
+      <sc-if value="{{ tab_perfil }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:14px 24px 22px;text-align:center">
+          <div style="font-size:10px;letter-spacing:0.26em;color:#77736A;font-weight:600;margin-bottom:4px">PROGRAMA DE FIDELIDAD</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:500;font-size:34px;line-height:1;margin-bottom:20px">Elite</div>
+          <div style="display:flex;justify-content:center;margin-bottom:18px">
+            <div style="width:104px;height:104px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#FFFFFF;position:relative;transition:background 0.5s ease;box-shadow:0 10px 28px rgba(23,21,18,0.22);background:{{ tierColor }}">
+              <span style="position:absolute;inset:7px;border-radius:50%;border:1px solid rgba(255,255,255,0.4)"></span>
+              <span style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:16px">Elite</span>
+              <span style="position:absolute;bottom:-9px;font-size:9px;letter-spacing:0.16em;background:#171512;color:#FFFFFF;padding:4px 12px;border-radius:20px;white-space:nowrap;font-weight:600">{{ tierLabel }}</span>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#77736A;margin-bottom:8px">Hola, {{ memberName }} · ID {{ memberId }}</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:38px;line-height:1;margin-bottom:4px">{{ pointsDisplay }}</div>
+          <div style="font-size:10.5px;letter-spacing:0.14em;color:#77736A;text-transform:uppercase;margin-bottom:18px">puntos acumulados</div>
+          <div style="height:4px;background:#DAD4C3;border-radius:4px;overflow:hidden;margin-bottom:7px">
+            <div style="height:100%;border-radius:4px;transition:width 0.6s ease,background 0.5s ease;width:{{ percent }}%;background:{{ tierColor }}"></div>
+          </div>
+          <div style="font-size:11px;color:#77736A">{{ nextLabel }}</div>
+        </div>
+
+        <div style="padding:0 24px 22px">
+          <div style="background:#FFFFFF;border:1px solid #DAD4C3;border-radius:16px;padding:18px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px">
+              <div>
+                <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700;margin-bottom:6px">Completá tu perfil</div>
+                <div style="font-size:17px;font-weight:700;color:#171512;line-height:1.25">{{ profileFormTitle }}</div>
+              </div>
+              <span style="font-size:9px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;background:{{ profileBadgeBg }};color:{{ profileBadgeFg }};padding:5px 9px;border-radius:20px">{{ profileBadgeText }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#77736A;font-weight:700">
+                Nombre
+                <input defaultValue="{{ memberName }}" style="height:42px;border:1px solid #DAD4C3;border-radius:10px;padding:0 12px;font-family:inherit;font-size:13px;font-weight:600;color:#171512;background:#F9F8F4;box-sizing:border-box">
+              </label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#77736A;font-weight:700">
+                Fecha de cumpleaños
+                <input defaultValue="12/08" style="height:42px;border:1px solid #DAD4C3;border-radius:10px;padding:0 12px;font-family:inherit;font-size:13px;font-weight:600;color:#171512;background:#F9F8F4;box-sizing:border-box">
+              </label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#77736A;font-weight:700">
+                Categoría favorita
+                <select style="height:42px;border:1px solid #DAD4C3;border-radius:10px;padding:0 12px;font-family:inherit;font-size:13px;font-weight:600;color:#171512;background:#F9F8F4;box-sizing:border-box">
+                  <option>Fragancias</option>
+                  <option>Skincare</option>
+                  <option>Maquillaje</option>
+                </select>
+              </label>
+            </div>
+            <div style="font-size:12px;color:#77736A;line-height:1.45;margin-bottom:14px">{{ profileFormHelper }}</div>
+            <button onClick="{{ saveProfile }}" style="display:block;width:100%;border:none;border-radius:10px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;cursor:pointer;font-family:inherit;background:{{ profileBtnBg }};color:{{ profileBtnFg }}">{{ profileBtnText }}</button>
+          </div>
+        </div>
+
+        <div style="padding:2px 24px 0">
+          <div style="font-size:15px;letter-spacing:0.24em;text-transform:uppercase;color:#77736A;text-align:center;margin-bottom:16px">Insignias</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;margin-bottom:24px">
+            <sc-for list="{{ badgesList }}" as="bd" hint-placeholder-count="6">
+              <div style="height:118px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:{{ bd.bg }};border:1px solid {{ bd.border }};border-radius:16px;box-shadow:{{ bd.shadow }};opacity:{{ bd.op }}">
+                <svg width="58" height="58" viewBox="0 0 100 100" aria-hidden="true" style="display:block">
+                  <circle cx="50" cy="50" r="42" fill="none" stroke="{{ bd.gold }}" stroke-width="1.1"/>
+                  <circle cx="50" cy="50" r="35" fill="none" stroke="{{ bd.red }}" stroke-width="1.35"/>
+                  <circle cx="50" cy="50" r="47" fill="none" stroke="{{ bd.gold }}" stroke-width="0.7" opacity="0.75"/>
+                  <path d="M50 5l2 4-2 4-2-4 2-4ZM50 87l2 4-2 4-2-4 2-4ZM5 50l4-2 4 2-4 2-4-2ZM87 50l4-2 4 2-4 2-4-2Z" fill="{{ bd.gold }}"/>
+                  <sc-if value="{{ bd.isWelcome }}" hint-placeholder-val="{{ true }}">
+                    <path d="M50 26c8 7 15 11 24 10-1 20-10 33-24 41-14-8-23-21-24-41 9 1 16-3 24-10Z" fill="{{ bd.softRed }}" stroke="{{ bd.gold }}" stroke-width="1.45"/>
+                    <path d="M50 31c-7 8-8 18 0 29 8-11 7-21 0-29ZM31 43c8 2 14 8 18 19-12-1-19-8-18-19ZM69 43c-8 2-14 8-18 19 12-1 19-8 18-19Z" fill="none" stroke="{{ bd.red }}" stroke-width="2.2" stroke-linejoin="round"/>
+                    <path d="M36 32c7 1 12 5 14 12 2-7 7-11 14-12-1 13-6 20-14 23-8-3-13-10-14-23Z" fill="none" stroke="{{ bd.gold }}" stroke-width="1.5"/>
+                  </sc-if>
+                  <sc-if value="{{ bd.isPurchase }}" hint-placeholder-val="{{ false }}">
+                    <path d="M29 38h18v30H25l4-30ZM53 38h18l4 30H53V38Z" fill="{{ bd.softRed }}" stroke="{{ bd.red }}" stroke-width="1.7"/>
+                    <path d="M38 40V27c0-7 5-12 12-12s12 5 12 12v13" fill="none" stroke="{{ bd.gold }}" stroke-width="2.2"/>
+                    <rect x="42" y="48" width="17" height="21" rx="3" fill="#FFFFFF" stroke="{{ bd.gold }}" stroke-width="1.6"/>
+                    <rect x="46" y="53" width="9" height="10" rx="1" fill="{{ bd.red }}" opacity="0.82"/>
+                  </sc-if>
+                  <sc-if value="{{ bd.isPremiere }}" hint-placeholder-val="{{ false }}">
+                    <path d="M25 66l5-32 16 22 4-35 4 35 16-22 5 32H25Z" fill="{{ bd.softRed }}" stroke="{{ bd.red }}" stroke-width="1.7"/>
+                    <path d="M28 72h44" stroke="{{ bd.gold }}" stroke-width="3.5" stroke-linecap="square"/>
+                    <circle cx="30" cy="30" r="5" fill="#FFFFFF" stroke="{{ bd.gold }}" stroke-width="2"/>
+                    <circle cx="50" cy="18" r="5" fill="#FFFFFF" stroke="{{ bd.gold }}" stroke-width="2"/>
+                    <circle cx="70" cy="30" r="5" fill="#FFFFFF" stroke="{{ bd.gold }}" stroke-width="2"/>
+                    <path d="M50 51l7 7-7 7-7-7 7-7Z" fill="#FFFFFF" stroke="{{ bd.gold }}" stroke-width="2"/>
+                  </sc-if>
+                  <sc-if value="{{ bd.isPrive }}" hint-placeholder-val="{{ false }}">
+                    <path d="M24 38h52L50 76 24 38Z" fill="{{ bd.softRed }}" stroke="{{ bd.red }}" stroke-width="1.7"/>
+                    <path d="M24 38l12-12h28l12 12M36 26l14 50M64 26 50 76M36 26l14 12 14-12M24 38h52M36 38l14 38 14-38" fill="none" stroke="{{ bd.gold }}" stroke-width="1.35"/>
+                  </sc-if>
+                  <sc-if value="{{ bd.isAmbassador }}" hint-placeholder-val="{{ false }}">
+                    <path d="M50 68C32 52 25 43 25 33c0-8 6-14 14-14 5 0 9 3 11 7 2-4 6-7 11-7 8 0 14 6 14 14 0 10-7 19-25 35Z" fill="{{ bd.softRed }}" stroke="{{ bd.red }}" stroke-width="1.8"/>
+                    <path d="M50 68c-1 10-7 15-16 17 3-6 7-11 16-17Z" fill="#FFFFFF" stroke="{{ bd.gold }}" stroke-width="1.8"/>
+                    <path d="M37 27c-6 6-4 15 4 24" fill="none" stroke="#FFFFFF" stroke-width="3" opacity="0.88"/>
+                  </sc-if>
+                  <sc-if value="{{ bd.isTrivia }}" hint-placeholder-val="{{ false }}">
+                    <path d="M37 68c-8-4-13-12-13-22 0-15 11-27 26-27 14 0 26 11 26 25 0 9-5 17-12 22" fill="none" stroke="{{ bd.gold }}" stroke-width="2"/>
+                    <path d="M46 61c0-11 12-11 12-22 0-6-4-10-10-10-5 0-9 3-11 8" fill="none" stroke="{{ bd.red }}" stroke-width="4.2" stroke-linecap="round"/>
+                    <circle cx="48" cy="73" r="3.2" fill="{{ bd.red }}"/>
+                    <path d="M26 68c-4 3-7 7-9 12M74 68c4 3 7 7 9 12M22 74l7 1M78 75l7-1" stroke="{{ bd.gold }}" stroke-width="2" stroke-linecap="round"/>
+                  </sc-if>
+                </svg>
+                <span style="font-size:13.5px;font-weight:800;text-align:center;color:{{ bd.fg }};line-height:1.05;letter-spacing:0">{{ bd.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding:0 24px 16px">
+          <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;text-align:center;margin-bottom:9px">Beneficios de tu categoría</div>
+          <ul style="margin:0;padding:0 0 6px 18px;font-size:12.5px;color:#171512;line-height:1.9">
+            <sc-for list="{{ benefits }}" as="b" hint-placeholder-count="3">
+              <li>{{ b }}</li>
+            </sc-for>
+          </ul>
+        </div>
+
+        <div style="padding:6px 20px 4px">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#77736A" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+            <span style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700">Historial de puntos</span>
+          </div>
+          <div style="font-size:12.5px;color:#77736A;margin-bottom:8px">Balance actual: <strong style="color:#171512">{{ pointsDisplay }} pts</strong></div>
+          <div style="display:flex;flex-direction:column">
+            <sc-for list="{{ ledgerList }}" as="l" hint-placeholder-count="6">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #E4E1D7">
+                <div>
+                  <div style="font-size:13px;font-weight:600;color:#171512;margin-bottom:2px">{{ l.label }}</div>
+                  <div style="font-size:11px;color:#B3AFA3">{{ l.date }}</div>
+                </div>
+                <div style="font-size:13px;font-weight:700;color:{{ l.color }};white-space:nowrap;margin-left:12px">{{ l.deltaText }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===================== CAJA ===================== -->
+      <sc-if value="{{ tab_caja }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:6px 20px 10px">
+
+          <sc-if value="{{ showCajaId }}" hint-placeholder-val="{{ true }}">
+            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700;margin-bottom:16px">Mostrá esto en caja</div>
+            <div style="background:#FFFFFF;border:1px solid #DAD4C3;border-radius:16px;padding:26px 20px;text-align:center;margin-bottom:20px">
+              <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#171512" stroke-width="1.3" style="margin-bottom:14px">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75ZM6.75 16.5h.75v.75h-.75v-.75ZM16.5 6.75h.75v.75h-.75v-.75ZM13.5 13.5h.75v.75h-.75v-.75ZM13.5 19.5h.75v.75h-.75v-.75ZM19.5 13.5h.75v.75h-.75v-.75ZM19.5 19.5h.75v.75h-.75v-.75ZM16.5 16.5h.75v.75h-.75v-.75Z"/>
+              </svg>
+              <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:24px;letter-spacing:0.08em;margin-bottom:6px">{{ memberId }}</div>
+              <div style="font-size:11.5px;color:#77736A;margin-bottom:16px">{{ tierLabel }} · {{ pointsDisplay }} pts</div>
+              <div style="width:126px;height:126px;margin:0 auto 16px;background:#FFFFFF;border:8px solid #FFFFFF;box-shadow:inset 0 0 0 1px #E4E1D7;position:relative">
+                <div style="position:absolute;inset:0;background:
+                  linear-gradient(#171512,#171512) 0 0/32px 32px no-repeat,
+                  linear-gradient(#FFFFFF,#FFFFFF) 7px 7px/18px 18px no-repeat,
+                  linear-gradient(#171512,#171512) 11px 11px/10px 10px no-repeat,
+                  linear-gradient(#171512,#171512) 94px 0/32px 32px no-repeat,
+                  linear-gradient(#FFFFFF,#FFFFFF) 101px 7px/18px 18px no-repeat,
+                  linear-gradient(#171512,#171512) 105px 11px/10px 10px no-repeat,
+                  linear-gradient(#171512,#171512) 0 94px/32px 32px no-repeat,
+                  linear-gradient(#FFFFFF,#FFFFFF) 7px 101px/18px 18px no-repeat,
+                  linear-gradient(#171512,#171512) 11px 105px/10px 10px no-repeat,
+                  repeating-linear-gradient(90deg,#171512 0 7px,transparent 7px 14px),
+                  repeating-linear-gradient(0deg,transparent 0 9px,#171512 9px 14px,transparent 14px 22px);
+                  background-blend-mode:normal"></div>
+                <div style="position:absolute;left:42px;top:42px;width:10px;height:10px;background:#171512;box-shadow:18px 0 #171512,36px 0 #171512,54px 0 #171512,0 18px #171512,27px 18px #171512,63px 18px #171512,9px 36px #171512,36px 36px #171512,54px 36px #171512,18px 54px #171512,45px 54px #171512,63px 54px #171512,0 72px #171512,27px 72px #171512,54px 72px #171512"></div>
+              </div>
+              <div style="font-size:11.5px;color:#77736A;line-height:1.6">Identificate en caja para sumar puntos en tu próxima compra.</div>
+            </div>
+
+            <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#77736A;font-weight:700;margin-bottom:10px">O canjeá un cupón</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ couponsList }}" as="cp" hint-placeholder-count="3">
+                <button onClick="{{ cp.selectForCaja }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left;border:1px solid #DAD4C3;background:#FFFFFF;border-radius:12px;padding:13px 16px;cursor:pointer;font-family:inherit">
+                  <div>
+                    <div style="font-size:12.5px;font-weight:600;margin-bottom:2px">{{ cp.title }}</div>
+                    <div style="font-size:10.5px;color:#B3AFA3">#{{ cp.code }}</div>
+                  </div>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B3AFA3" stroke-width="1.8" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ showCajaCoupon }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ closeCajaCoupon }}" style="display:flex;align-items:center;gap:6px;border:none;background:none;color:#77736A;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;padding:8px 0;margin-bottom:10px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>
+              Mostrar mi ID
+            </button>
+            <div style="background:#FFFFFF;border:1px solid #DAD4C3;border-radius:16px;padding:26px 20px;text-align:center;margin-bottom:16px">
+              <div style="font-size:11px;color:#77736A;margin-bottom:6px">{{ redeemTitle }}</div>
+              <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:28px;letter-spacing:0.06em;margin-bottom:14px">{{ redeemCode }}</div>
+              <div style="width:132px;height:132px;margin:0 auto 16px;background:#FFFFFF;border:8px solid #FFFFFF;box-shadow:inset 0 0 0 1px #E4E1D7;position:relative">
+                <div style="position:absolute;inset:0;background:
+                  linear-gradient(#171512,#171512) 0 0/34px 34px no-repeat,
+                  linear-gradient(#FFFFFF,#FFFFFF) 7px 7px/20px 20px no-repeat,
+                  linear-gradient(#171512,#171512) 12px 12px/10px 10px no-repeat,
+                  linear-gradient(#171512,#171512) 98px 0/34px 34px no-repeat,
+                  linear-gradient(#FFFFFF,#FFFFFF) 105px 7px/20px 20px no-repeat,
+                  linear-gradient(#171512,#171512) 110px 12px/10px 10px no-repeat,
+                  linear-gradient(#171512,#171512) 0 98px/34px 34px no-repeat,
+                  linear-gradient(#FFFFFF,#FFFFFF) 7px 105px/20px 20px no-repeat,
+                  linear-gradient(#171512,#171512) 12px 110px/10px 10px no-repeat,
+                  repeating-linear-gradient(90deg,#171512 0 7px,transparent 7px 14px),
+                  repeating-linear-gradient(0deg,transparent 0 9px,#171512 9px 14px,transparent 14px 22px)"></div>
+                <div style="position:absolute;left:44px;top:44px;width:10px;height:10px;background:#171512;box-shadow:18px 0 #171512,36px 0 #171512,54px 0 #171512,0 18px #171512,27px 18px #171512,63px 18px #171512,9px 36px #171512,36px 36px #171512,54px 36px #171512,18px 54px #171512,45px 54px #171512,63px 54px #171512,0 72px #171512,27px 72px #171512,54px 72px #171512"></div>
+              </div>
+              <div style="font-size:12px;color:#77736A;line-height:1.6">Presentá este código en caja para aplicar tu descuento.<br>Válido hasta {{ redeemExpiry }}.</div>
+            </div>
+            <button onClick="{{ downloadReceipt }}" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:none;border-radius:8px;padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:inherit;background:#171512;color:#FFFFFF">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+              Descargar comprobante (PDF)
+            </button>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showPoweredBy }}" hint-placeholder-val="{{ true }}">
+        <div style="text-align:center;font-size:10px;color:#77736A;letter-spacing:0.1em;margin-top:10px;padding-bottom:20px">Powered by Qurable</div>
+      </sc-if>
+      </div>
+
+      <div style="position:absolute;left:0;right:0;bottom:78px;display:flex;justify-content:center;pointer-events:none;height:0;overflow:visible;z-index:7">
         <div style="background:#171512;color:#FFFFFF;font-size:12px;padding:10px 20px;border-radius:20px;white-space:nowrap;transition:all 0.25s ease;transform:translateY({{ toastY }}px);opacity:{{ toastOpacity }};margin-top:-42px">{{ toastMsg }}</div>
+      </div>
+
+      <div style="position:absolute;bottom:0;left:0;right:0;background:#FFFFFF;border-top:1px solid #E4E1D7;display:flex;padding:6px 4px 8px;z-index:5">
+        <button onClick="{{ goInicio }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;padding:6px 2px;font-family:inherit;color:{{ navInicio }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+          <span style="font-size:9px;font-weight:600">Inicio</span>
+        </button>
+        <button onClick="{{ goRecompensas }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;padding:6px 2px;font-family:inherit;color:{{ navRecompensas }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M20.625 11.505v8.25a1.5 1.5 0 0 1-1.5 1.5H4.875a1.5 1.5 0 0 1-1.5-1.5v-8.25m8.25-6.375A2.625 2.625 0 1 0 9 7.755h2.625m0-2.625v2.625m0-2.625a2.625 2.625 0 1 1 2.625 2.625h-2.625m0 0v13.5M3 11.505h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.622-.504-1.125-1.125-1.125H3c-.621 0-1.125.503-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"/></svg>
+          <span style="font-size:9px;font-weight:600">Recompensas</span>
+        </button>
+        <button onClick="{{ goPerfil }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;padding:6px 2px;font-family:inherit;color:{{ navPerfil }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/></svg>
+          <span style="font-size:9px;font-weight:600">Perfil</span>
+        </button>
+        <button onClick="{{ goCaja }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;padding:6px 2px;font-family:inherit;color:{{ navCaja }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"/></svg>
+          <span style="font-size:9px;font-weight:600">Caja</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== WHATSAPP DEL MEMBER (device) ===== -->
+  <div style="width:400px;max-width:100%;background:#FFFFFF;border-radius:26px;box-shadow:0 24px 60px rgba(23,21,18,0.18);overflow:hidden;border:1px solid #DBD7CC">
+    <div style="background:#F3F1EA;padding:10px 16px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #E4E1D7">
+      <span style="width:8px;height:8px;border-radius:50%;background:#E0645A"></span>
+      <span style="width:8px;height:8px;border-radius:50%;background:#E0B95A"></span>
+      <span style="width:8px;height:8px;border-radius:50%;background:#6FBF73"></span>
+      <span style="margin-left:10px;font-size:11px;color:#8A8779">web.whatsapp.com/rouge-elite</span>
+    </div>
+    <div style="height:740px;display:flex;flex-direction:column;background:#EFE7DA">
+      <div style="background:#075E54;color:#FFFFFF;padding:10px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 0 rgba(0,0,0,0.12);z-index:2">
+        <div style="width:38px;height:38px;border-radius:50%;background:#171512;color:#C9A860;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:15px;font-weight:800;flex-shrink:0">R</div>
+        <div style="min-width:0;flex:1">
+          <div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Rouge Elite</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ whatsAppStatus }}</div>
+        </div>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+      </div>
+      <div style="flex:1;padding:14px 12px 12px;overflow:hidden;background-color:#E5DDD5;background-image:radial-gradient(circle at 18px 18px,rgba(117,107,96,0.10) 0 1px,transparent 1.5px);background-size:28px 28px">
+        <div style="display:flex;justify-content:center;margin-bottom:12px">
+          <div style="background:#FFF4C8;color:#6B5E38;font-size:10.5px;line-height:1.35;text-align:center;border-radius:8px;padding:7px 10px;max-width:260px;box-shadow:0 1px 1px rgba(0,0,0,0.08)">Los mensajes y llamadas están protegidos con cifrado de extremo a extremo.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ whatsAppMessages }}" as="wa" hint-placeholder-count="4">
+            <div style="align-self:flex-start;max-width:86%;animation:fadeUp 0.28s ease">
+              <div style="background:#FFFFFF;color:#111B21;border-radius:0 12px 12px 12px;padding:9px 10px 6px;box-shadow:0 1px 1px rgba(0,0,0,0.12)">
+                <sc-if value="{{ wa.hasImage }}" hint-placeholder-val="{{ false }}">
+                  <img src="{{ wa.image }}" alt="25% OFF en Skincare" style="width:100%;height:96px;object-fit:cover;border-radius:8px;margin-bottom:8px;display:block">
+                </sc-if>
+                <div style="font-size:13px;line-height:1.42;white-space:pre-line">{{ wa.text }}</div>
+                <div style="font-size:9.5px;color:#667781;text-align:right;margin-top:3px">{{ wa.time }}</div>
+                <sc-if value="{{ wa.hasActions }}" hint-placeholder-val="{{ true }}">
+                  <div style="margin:7px -10px -6px;overflow:hidden;border-radius:0 0 12px 12px">
+                  <sc-for list="{{ wa.actions }}" as="act" hint-placeholder-count="2">
+                    <button onClick="{{ act.run }}" style="width:100%;min-height:39px;border:none;border-top:1px solid #E8E8E8;background:#FFFFFF;color:#128C7E;display:flex;align-items:center;justify-content:center;gap:7px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">
+                      <span style="font-size:13px;color:#128C7E">{{ act.icon }}</span>
+                      {{ act.label }}
+                    </button>
+                  </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="background:#F0F2F5;padding:8px 9px 12px;display:flex;align-items:center;gap:7px">
+        <div style="flex:1;height:42px;border-radius:22px;background:#FFFFFF;display:flex;align-items:center;gap:8px;padding:0 14px;color:#8696A0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75h.008v.008H9.75V9.75Zm4.5 0h.008v.008h-.008V9.75Z"/></svg>
+          <span style="font-size:13px">Mensaje</span>
+        </div>
+        <div style="width:42px;height:42px;border-radius:50%;background:#075E54;color:#FFFFFF;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V5.25a3 3 0 1 1 6 0v7.5a3 3 0 0 1-3 3Z"/></svg>
+        </div>
       </div>
     </div>
   </div>
@@ -204,25 +644,126 @@ a{color:#171512}a:hover{color:#A6332A}
 <script type="text/x-dc" data-dc-script data-props="{&quot;memberName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Valentina&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showCanal&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showPoweredBy&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
   genCode() { let c = ''; for (let i = 0; i < 6; i++) c += Math.floor(Math.random() * 10); return c; }
-  state = { journey: 'j1', tier: 'premiere', act: {}, profileDone: false, copied: false, toast: '', toastOn: false, welcomeCode: this.genCode(), crossCode: this.genCode() };
+  genId() { const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let s = ''; for (let i = 0; i < 6; i++) s += chars[Math.floor(Math.random() * chars.length)]; return s; }
+
+  state = {
+    story: 'purchase', journey: 'j4', tier: 'premiere', act: {}, copied: false, toast: '', toastOn: false,
+    welcomeCode: this.genCode(), crossCode: this.genCode(), reactCode: this.genCode(), memberId: this.genId(),
+    tab: 'inicio', redeeming: null,
+    missions: {
+      profile: { status: 'none', progress: 0 }, referral: { status: 'none', progress: 0 },
+      social: { status: 'none', progress: 0 }, buy2: { status: 'none', progress: 0 }
+    },
+    claimedPopular: {},
+    trivaOpen: false, trivaIdx: 0, trivaAnswer: null, trivaScore: 0, trivaDone: false
+  };
 
   TIERS = {
     nueva:    { label: 'BIENVENIDA', color: '#77736A', points: 0,     next: 100,   nextLabel: 'Completá tu perfil para sumar 100 pts' },
-    premiere: { label: 'PREMIERE',   color: '#A6332A', points: 1240,  next: 3000,  nextLabel: '1.760 pts para pasar a Privé' },
-    prive:    { label: 'PRIVÉ',      color: '#ACA9A0', points: 3450,  next: 6500,  nextLabel: '3.050 pts para pasar a Oro' },
-    oro:      { label: 'ORO',        color: '#A5834C', points: 7120,  next: 14400, nextLabel: '7.280 pts para pasar a Diamante' },
-    diamante: { label: 'DIAMANTE',   color: '#1C1A17', points: 15800, next: 15800, nextLabel: 'Nivel máximo alcanzado' },
-    inactiva: { label: 'PRIVÉ',      color: '#ACA9A0', points: 2100,  next: 6500,  nextLabel: 'Hace 8 meses que no comprás' }
+    premiere: { label: 'PREMIERE',   color: '#DE2F30', points: 1240,  next: 3000,  nextLabel: '1.760 pts para pasar a Privé' },
+    prive:    { label: 'PRIVÉ',      color: '#B2B1B1', points: 3450,  next: 6500,  nextLabel: '3.050 pts para pasar a Oro' },
+    oro:      { label: 'ORO',        color: '#B5A37E', points: 7120,  next: 14400, nextLabel: '7.280 pts para pasar a Diamante' },
+    diamante: { label: 'DIAMANTE',   color: '#000000', points: 15800, next: 15800, nextLabel: 'Nivel máximo alcanzado' },
+    inactiva: { label: 'PRIVÉ',      color: '#B2B1B1', points: 2100,  next: 6500,  nextLabel: 'Hace 8 meses que no comprás' }
   };
   TIER_NAMES = { nueva: 'Bienvenida', premiere: 'Premiere', prive: 'Privé', oro: 'Oro', diamante: 'Diamante', inactiva: 'Privé — inactiva' };
+  TIER_RANK = { nueva: 0, premiere: 1, prive: 2, oro: 3, diamante: 4, inactiva: 2 };
+  CARD_STYLES = {
+    nueva:    { bg: '#C8C3BA', fg: '#2F2D29', text: '#FFFFFF', muted: 'rgba(255,255,255,0.72)', accent: '#F0E6DA', pillBg: 'rgba(255,255,255,0.16)', pillBorder: 'rgba(255,255,255,0.30)', line: 'rgba(255,255,255,0.24)' },
+    premiere: { bg: '#E3302F', fg: '#F7DAC5', text: '#FFFFFF', muted: 'rgba(255,255,255,0.74)', accent: '#F7DAC5', pillBg: 'rgba(255,255,255,0.14)', pillBorder: 'rgba(255,255,255,0.32)', line: 'rgba(247,218,197,0.24)' },
+    prive:    { bg: '#C8C3BA', fg: '#34312C', text: '#FFFFFF', muted: 'rgba(255,255,255,0.70)', accent: '#F0E6DA', pillBg: 'rgba(255,255,255,0.16)', pillBorder: 'rgba(255,255,255,0.30)', line: 'rgba(255,255,255,0.22)' },
+    oro:      { bg: '#B99A5B', fg: '#34312C', text: '#FFFFFF', muted: 'rgba(255,255,255,0.72)', accent: '#F3E3BD', pillBg: 'rgba(255,255,255,0.15)', pillBorder: 'rgba(255,255,255,0.30)', line: 'rgba(52,49,44,0.20)' },
+    diamante: { bg: '#171512', fg: '#D4B072', text: '#FFFFFF', muted: 'rgba(255,255,255,0.68)', accent: '#D4B072', pillBg: 'rgba(255,255,255,0.14)', pillBorder: 'rgba(255,255,255,0.22)', line: 'rgba(183,151,93,0.30)' },
+    inactiva: { bg: '#C8C3BA', fg: '#34312C', text: '#FFFFFF', muted: 'rgba(255,255,255,0.70)', accent: '#F0E6DA', pillBg: 'rgba(255,255,255,0.16)', pillBorder: 'rgba(255,255,255,0.30)', line: 'rgba(255,255,255,0.22)' }
+  };
 
   JOURNEYS = {
     j1: { num: 'J1', name: 'Relanzamiento Elite', tier: 'premiere', canal: { type: 'Email', subject: 'Vuelve Elite — tu cupón de bienvenida', body: 'Relanzamos el programa para el Día de la Madre. Entrá al portal y activá tu 15% OFF de bienvenida.' } },
     j2: { num: 'J2', name: 'Completar perfil', tier: 'nueva', canal: { type: 'WhatsApp', body: 'Hola Valentina, bienvenida a Elite. Completá tu perfil en un minuto y sumá 100 pts a tu cuenta.', time: '10:42' } },
     j3: { num: 'J3', name: 'Referidos', tier: 'prive', canal: { type: 'Email', subject: 'Referí a un amigo y llevate 200 pts', body: 'Compartí tu link de referido antes del Día de la Madre: cuando tu amigo se sume, ambos ganan puntos.' } },
-    j4: { num: 'J4', name: 'Cross-sell por compra', tier: 'oro', canal: { type: 'WhatsApp', body: 'Gracias por tu compra en Fragancias. Tenés un 20% OFF en Skincare y Maquillaje esperándote en el portal.', time: '18:05' } },
+    j4: { num: 'J4', name: 'Cross-sell por compra', tier: 'premiere', canal: { type: 'WhatsApp', body: 'Gracias por tu compra en Fragancias. Tenés un 25% OFF en Skincare y Maquillaje esperándote en el portal.', time: '18:05' } },
     j5: { num: 'J5', name: 'Reactivación', tier: 'inactiva', canal: { type: 'Email', subject: 'Te extrañamos — un regalo para volver a vernos', body: 'Hace tiempo que no nos visitás. Reactivamos tu estatus Privé con un beneficio para el Día de la Madre.' } },
     j6: { num: 'J6', name: 'Early Access VIP', tier: 'diamante', canal: { type: 'Email', subject: 'Diamante: entrás 24 hs antes', body: 'La selección del Día de la Madre abre mañana para todos. Para vos, hoy.' } }
+  };
+  JOURNEY_TAB = { j1: 'recompensas', j2: 'inicio', j3: 'inicio', j4: 'inicio', j5: 'recompensas', j6: 'recompensas' };
+  STORY_STEPS = [
+    { key: 'purchase', num: '1', title: 'Compra detectada', subtitle: 'Valentina compra una fragancia para regalar', journey: 'j4', tab: 'inicio', redeeming: null },
+    { key: 'benefit', num: '2', title: 'Beneficio disponible', subtitle: 'El portal muestra el cupón de cross-category', journey: 'j4', tab: 'inicio', redeeming: null },
+    { key: 'message', num: '3', title: 'WhatsApp enviado', subtitle: 'Rouge refuerza el beneficio en el canal correcto', journey: 'j4', tab: 'inicio', redeeming: null },
+    { key: 'profile', num: '4', title: 'Perfil enriquecido', subtitle: 'La clienta completa datos y suma puntos', journey: 'j2', tab: 'perfil', redeeming: null },
+    { key: 'checkout', num: '5', title: 'Redención en caja', subtitle: 'El cupón queda listo para mostrar o escanear', journey: 'j4', tab: 'caja', redeeming: 'cross' }
+  ];
+  STORY_CONTEXT = {
+    purchase: { title: 'Evento member', body: 'Compra confirmada en categoría Fragancias. La regla ya fue configurada en el manager real.', tag1: 'Fragancias', tag2: 'Premier' },
+    benefit: { title: 'Portal actualizado', body: 'El beneficio aparece como una recomendación relevante: probar Skincare o Maquillaje después de comprar perfume.', tag1: '25% OFF', tag2: 'Skincare' },
+    message: { title: 'Canal activado', body: 'WhatsApp repite el mismo beneficio, con copy personalizado y acceso directo al portal.', tag1: 'WhatsApp', tag2: 'Tiempo real' },
+    profile: { title: 'Data a cambio de valor', body: 'La misión de perfil mejora la base de datos y acredita 100 puntos al instante.', tag1: '+100 pts', tag2: 'Beauty profile' },
+    checkout: { title: 'Uso omnicanal', body: 'Valentina puede mostrar el cupón o su ID en caja para validar la redención.', tag1: 'Caja', tag2: 'Cupón' }
+  };
+  WHATSAPP_DEF = {
+    j1: {
+      status: 'campaña activa',
+      times: ['10:38', '10:39', '10:42'],
+      messages: [
+        'Hola {{name}}, Rouge Elite está de vuelta.',
+        'Relanzamos el programa para el Día de la Madre y ya tenés un cupón de bienvenida esperándote.',
+        'Entrá al portal, activá ELITE15 y usalo en tu próxima compra.'
+      ]
+    },
+    j2: {
+      status: 'sumando puntos',
+      times: ['10:42', '10:43', '10:44'],
+      messages: [
+        'Hola {{name}}, bienvenida a Rouge Elite.',
+        'Completá tu perfil en un minuto y sumá 100 pts a tu cuenta.',
+        'Cuando termines, vas a ver tus puntos acreditados en el portal.'
+      ]
+    },
+    j3: {
+      status: 'referidos',
+      times: ['11:05', '11:06', '11:07'],
+      messages: [
+        '{{name}}, podés invitar a alguien a Rouge Elite desde tu link personal.',
+        'Cuando tu referido se sume, ambos ganan puntos.',
+        'Tu link está disponible en Misiones dentro del portal.'
+      ]
+    },
+    j4: {
+      status: 'beneficio activo',
+      times: ['18:05', '18:06', '18:07'],
+      messages: [
+        'Gracias por tu compra en Fragancias, {{name}}.',
+        'Te dejamos un 25% OFF en Skincare y Maquillaje para acompañar tu regalo.',
+        'El beneficio SKIN25 ya aparece en tu portal Rouge Elite.'
+      ]
+    },
+    j5: {
+      status: 'reactivación',
+      times: ['09:20', '09:21', '09:23'],
+      messages: [
+        'Hola {{name}}, te extrañamos en Rouge.',
+        'Reactivamos tu estatus {{tier}} con un beneficio especial para volver a vernos.',
+        'Entrá al portal y activalo antes de que venza.'
+      ]
+    },
+    j6: {
+      status: 'acceso VIP',
+      times: ['20:14', '20:15', '20:16'],
+      messages: [
+        '{{name}}, por ser Diamante entrás 24 hs antes.',
+        'La selección especial del Día de la Madre ya está disponible para vos.',
+        'Abrí el portal y explorá tu acceso VIP.'
+      ]
+    },
+    default: {
+      status: 'en línea',
+      times: ['10:42', '10:43', '10:44'],
+      messages: [
+        'Hola {{name}}, tu cuenta Rouge Elite está en categoría {{tier}}.',
+        'Tenés {{points}} pts acumulados y beneficios disponibles en el portal.',
+        'Te vamos a avisar por acá cuando tengas nuevas promos o misiones.'
+      ]
+    }
   };
 
   BENEFITS = {
@@ -234,6 +775,61 @@ class Component extends DCLogic {
     inactiva: ['Acumulás 10% del valor de tus compras en puntos.', '10% de descuento por cumpleaños.', 'Hasta 20% de descuento con puntos acumulados.']
   };
 
+  COUPONS_DEF = [
+    { key: 'welcome', title: 'Cupón de bienvenida', desc: 'Relanzamos Elite para el Día de la Madre. Activá tu beneficio de bienvenida para tu próxima compra.', pct: '15% OFF', expiry: '30 días', codeKey: 'welcomeCode' },
+    { key: 'cross', title: '25% OFF Skincare / Maquillaje', desc: 'Gracias por elegir Rouge para el regalo de mamá. Como socia Elite, tenés un beneficio exclusivo para probar Skincare o Maquillaje.', pct: '25% OFF', expiry: '14 días', codeKey: 'crossCode' },
+    { key: 'react', title: 'Volvé a Privé', desc: 'Hace tiempo que no nos visitás. Reactivamos tu estatus Privé con un beneficio especial para el Día de la Madre.', pct: 'Especial', expiry: '21 días', codeKey: 'reactCode' }
+  ];
+
+  POPULAR_DEF = [
+    { key: 'flash', tag: '20% OFF', title: 'Flash Sale — termina pronto', caption: '365 canjeados', pct: '20% OFF', desc: 'Descuento por tiempo limitado en toda la tienda.', expiry: '48 hs' },
+    { key: 'sample', tag: 'REGALO', title: 'Muestra gratis con tu compra', caption: '175 canjeados', pct: 'Regalo', desc: 'Sumá una muestra de fragancia gratis en tu próxima compra.', expiry: '30 días' },
+    { key: 'birthday', tag: '$500 OFF', title: 'Descuento de cumpleaños', caption: '174 canjeados', pct: '$500 OFF', desc: 'Un mimo especial para tu mes de cumpleaños.', expiry: '30 días' }
+  ];
+
+  LEDGER = [
+    { date: '10 Jul', label: 'Compra en Fragancias', delta: 180 },
+    { date: '08 Jul', label: 'Bono bienvenida Elite', delta: 100 },
+    { date: '02 Jul', label: 'Canje 20% OFF Skincare', delta: -450 },
+    { date: '28 Jun', label: 'Compra en Maquillaje', delta: 95 },
+    { date: '14 Jun', label: 'Referido: Ana G. se unió', delta: 200 },
+    { date: '01 Jun', label: 'Compra en Perfumería', delta: 310 }
+  ];
+
+  CONTENT_DEF = [
+    { title: 'Guía de regalos: Día de la Madre', blurb: 'Los 8 favoritos para regalar esta temporada.', bg: 'linear-gradient(135deg,#A6332A,#171512)' },
+    { title: 'Rituales de skincare PM', blurb: '3 pasos para una piel luminosa antes de dormir.', bg: 'linear-gradient(135deg,#C9A860,#77736A)' },
+    { title: 'Nueva colección Rouge', blurb: 'Conocé los lanzamientos de la temporada.', bg: 'linear-gradient(135deg,#1C1A17,#A5834C)' },
+    { title: 'Detrás de escena', blurb: 'Así se crea una fragancia Rouge, paso a paso.', bg: 'linear-gradient(135deg,#77736A,#33312B)' }
+  ];
+
+  PROMOTIONS_DEF = [
+    { tag: 'Acceso VIP', big: '24 hs antes', sub: 'Selección Día de la Madre', desc: 'Por ser Diamante, entrás primero a la selección especial del Día de la Madre, antes que el resto de la base.', cta: 'Ver selección', featured: true },
+    { tag: 'Puntos de devolución', big: '+50 pts', sub: 'Cashback en tu próxima compra', desc: 'Sumá 50 puntos extra en cualquier compra realizada esta semana.', cta: 'Activar' },
+    { tag: 'Monto fijo', big: '$100 OFF', sub: 'Cuesta 500 pts', desc: 'Canjeá 500 de tus puntos acumulados por $100 OFF en tu próxima compra.', cta: 'Canjear con puntos' },
+    { tag: 'Envío', big: 'Gratis', sub: 'En compras +$50.000', desc: 'Envío sin cargo a todo el país en compras online superiores a $50.000.', cta: 'Ver más' }
+  ];
+
+  STORES_DEF = [
+    { name: 'Rouge Alto Palermo', addr: 'Av. Santa Fe 3253, CABA', hours: '10 a 22 hs', dist: '1.2 km' },
+    { name: 'Rouge Unicenter', addr: 'Panamericana Km 37.5, Martínez', hours: '10 a 22 hs', dist: '4.8 km' },
+    { name: 'Rouge Recoleta', addr: 'Av. Callao 1200, CABA', hours: '9 a 21 hs', dist: '2.5 km' },
+    { name: 'Rouge Nuevocentro', addr: 'Bv. Menéndez Pidal 5502, Córdoba', hours: '10 a 22 hs', dist: '—' }
+  ];
+
+  MISSIONS_DEF = {
+    profile: { title: 'Completá tu perfil', desc: 'Contanos un poco más de vos y sumá puntos de bienvenida a tu cuenta Elite.', reward: 100, steps: 1 },
+    referral: { title: 'Referí a un amigo', desc: 'Compartí tu link. Cuando tu amigo se una a Elite, ambos ganan.', reward: 200, steps: 1 },
+    social: { title: 'Seguinos en Instagram', desc: 'Sumá puntos por seguir a @perfumeriasrouge.', reward: 50, steps: 1 },
+    buy2: { title: 'Desafío de bienvenida', desc: 'Comprá 3 veces este mes y multiplicá tus puntos.', reward: 150, steps: 3 }
+  };
+
+  TRIVA_Q = [
+    { q: '¿Qué beneficio exclusivo te da la categoría Privé por tu cumpleaños?', options: ['5% OFF', '10% OFF', 'Envío gratis', '2x1 en fragancias'], correct: 1 },
+    { q: 'Si ya tenés 1.240 pts en Premiere, ¿cuántos te faltan para pasar a Privé?', options: ['1.760 pts', '1.000 pts', '2.500 pts', '3.000 pts'], correct: 0 },
+    { q: '¿Qué porcentaje de cada compra acumulás en puntos dentro de Elite?', options: ['5%', '10%', '15%', '20%'], correct: 1 }
+  ];
+
   toast(msg) {
     clearTimeout(this._tt);
     this.setState({ toast: msg, toastOn: true });
@@ -243,12 +839,16 @@ class Component extends DCLogic {
     this.setState(s => ({ act: { ...s.act, [key]: true } }));
     this.toast(msg);
   }
+  goTab(tab) {
+    this.setState({ tab, trivaOpen: false });
+  }
 
   renderVals() {
     const s = this.state;
     const j = s.journey ? this.JOURNEYS[s.journey] : null;
     const tierKey = s.tier;
     const t = this.TIERS[tierKey];
+    const displayName = this.props.memberName ?? 'Valentina';
     const jKeys = Object.keys(this.JOURNEYS);
 
     const journeyList = jKeys.map(k => {
@@ -258,7 +858,7 @@ class Component extends DCLogic {
         bg: active ? '#171512' : '#F9F8F4', fg: active ? '#FFFFFF' : '#33312B',
         border: active ? '#171512' : '#E4E1D7',
         numColor: active ? '#C9A860' : '#B3AFA3', tagColor: active ? 'rgba(255,255,255,0.55)' : '#B3AFA3',
-        select: () => this.setState({ journey: k, tier: this.JOURNEYS[k].tier })
+        select: () => this.setState({ journey: k, tier: this.JOURNEYS[k].tier, tab: this.JOURNEY_TAB[k], trivaOpen: false })
       };
     });
     const tierList = Object.keys(this.TIERS).map(k => {
@@ -266,64 +866,320 @@ class Component extends DCLogic {
       return {
         label: this.TIER_NAMES[k],
         bg: active ? '#171512' : '#F6F4EF', fg: active ? '#FFFFFF' : '#33312B', border: active ? '#171512' : '#DBD7CC',
-        select: () => this.setState({ journey: null, tier: k })
+        select: () => this.setState({ journey: null, tier: k, tab: 'perfil', trivaOpen: false })
       };
     });
 
-    const idx = s.journey ? jKeys.indexOf(s.journey) : -1;
-    const go = i => { const k = jKeys[(i + jKeys.length) % jKeys.length]; this.setState({ journey: k, tier: this.JOURNEYS[k].tier }); };
-
-    let points = t.points;
-    if (tierKey === 'nueva' && s.profileDone) points += 100;
-    const percent = t.next === t.points ? 100 : Math.min(100, Math.round((points / t.next) * 100));
-    let nextLabel = t.nextLabel;
-    if (tierKey === 'nueva' && s.profileDone) nextLabel = '¡Sumaste tus primeros 100 pts!';
-
-    // card visibility: driven by journey when one is selected, by tier when browsing
-    const byJourney = !!s.journey;
-    const showWelcome = byJourney ? s.journey === 'j1' : false;
-    const showProfile = byJourney ? s.journey === 'j2' : tierKey === 'nueva';
-    const showVip = byJourney ? s.journey === 'j6' : tierKey === 'diamante';
-    const showReactivation = byJourney ? s.journey === 'j5' : tierKey === 'inactiva';
-    const showCrossSell = byJourney ? s.journey === 'j4' : ['premiere', 'prive', 'oro', 'diamante'].includes(tierKey);
-    const showReferral = byJourney ? s.journey === 'j3' : ['premiere', 'prive', 'oro', 'diamante'].includes(tierKey);
-
-    const done = k => !!s.act[k];
-    const btn = (k, idle) => ({
-      bg: done(k) ? '#EDE9DD' : '#171512', fg: done(k) ? '#77736A' : '#FFFFFF',
-      text: done(k) ? 'Beneficio activado ✓' : idle
+    const selectStory = step => this.setState({
+      story: step.key,
+      journey: step.journey,
+      tier: this.JOURNEYS[step.journey].tier,
+      tab: step.tab,
+      redeeming: step.redeeming,
+      trivaOpen: false
     });
-    const w = btn('welcome', 'Activar mi cupón'), c = btn('cross', 'Usar beneficio'), r = btn('react', 'Activar mi beneficio');
+    const storyList = this.STORY_STEPS.map(step => {
+      const active = s.story === step.key;
+      return {
+        num: step.num, title: step.title, subtitle: step.subtitle,
+        bg: active ? '#171512' : '#F9F8F4', fg: active ? '#FFFFFF' : '#33312B',
+        border: active ? '#171512' : '#E4E1D7',
+        numBg: active ? '#C9A860' : '#EDE9DD', numFg: active ? '#171512' : '#77736A',
+        subFg: active ? 'rgba(255,255,255,0.62)' : '#77736A',
+        select: () => selectStory(step)
+      };
+    });
+    const storyIdx = Math.max(0, this.STORY_STEPS.findIndex(step => step.key === s.story));
+    const goStory = delta => {
+      const next = this.STORY_STEPS[(storyIdx + delta + this.STORY_STEPS.length) % this.STORY_STEPS.length];
+      selectStory(next);
+    };
+    const storyContext = this.STORY_CONTEXT[s.story] || this.STORY_CONTEXT.purchase;
+
+    const idx = s.journey ? jKeys.indexOf(s.journey) : -1;
+    const go = i => { const k = jKeys[(i + jKeys.length) % jKeys.length]; this.setState({ journey: k, tier: this.JOURNEYS[k].tier, tab: this.JOURNEY_TAB[k], trivaOpen: false }); };
+
+    const rank = this.TIER_RANK[tierKey];
+    const claimedReward = Object.keys(this.MISSIONS_DEF).reduce((sum, k) => sum + (s.missions[k].status === 'claimed' ? this.MISSIONS_DEF[k].reward : 0), 0);
+    const points = t.points + claimedReward;
+    const percent = t.next === t.points ? 100 : Math.min(100, Math.round((points / t.next) * 100));
+    const cardStyle = this.CARD_STYLES[tierKey] || this.CARD_STYLES.premiere;
+    const pointsText = points.toLocaleString('es-AR');
+    const profileClaimed = s.missions.profile.status === 'claimed';
+    const nextLabel = tierKey === 'nueva' && profileClaimed ? '¡Sumaste tus primeros 100 pts!' : t.nextLabel;
+    const whatsAppDef = this.WHATSAPP_DEF[s.journey || 'default'] || this.WHATSAPP_DEF.default;
+    const fillWhatsApp = text => text.split('{{name}}').join(displayName).split('{{points}}').join(pointsText).split('{{tier}}').join(t.label);
+    const openBenefitFromWhatsApp = () => {
+      this.setState({ story: 'benefit', journey: 'j4', tier: 'premiere', tab: 'inicio', redeeming: null, trivaOpen: false });
+      this.toast('Beneficio abierto en Portal Elite');
+    };
+    const openCouponFromWhatsApp = () => {
+      this.setState({ story: 'checkout', journey: 'j4', tier: 'premiere', tab: 'caja', redeeming: 'cross', trivaOpen: false });
+      this.toast('Cupón listo para mostrar en caja');
+    };
+    const openProfileFromWhatsApp = () => {
+      this.setState({ story: 'profile', journey: 'j2', tier: 'nueva', tab: 'perfil', redeeming: null, trivaOpen: false });
+      this.toast('Perfil abierto');
+    };
+    const openPortalFromWhatsApp = () => {
+      this.setState({ tab: 'inicio', redeeming: null, trivaOpen: false });
+      this.toast('Portal Elite abierto');
+    };
+    const whatsAppActions = s.story === 'profile'
+      ? [{ label: 'Completar perfil', icon: '✎', run: openProfileFromWhatsApp }, { label: 'Ver mis puntos', icon: '•', run: openPortalFromWhatsApp }]
+      : s.story === 'checkout'
+        ? [{ label: 'Mostrar cupón en caja', icon: '▣', run: openCouponFromWhatsApp }, { label: 'Ver portal Elite', icon: '↗', run: openPortalFromWhatsApp }]
+        : [{ label: 'Abrir beneficio', icon: '↗', run: openBenefitFromWhatsApp }, { label: 'Ver cupón en caja', icon: '▣', run: openCouponFromWhatsApp }];
+    const couponImage = 'assets/coupon.png';
+    const whatsAppMessages = whatsAppDef.messages.map((text, i) => ({
+      text: fillWhatsApp(text),
+      time: whatsAppDef.times[i] || 'ahora',
+      actions: i === whatsAppDef.messages.length - 1 ? whatsAppActions : [],
+      hasActions: i === whatsAppDef.messages.length - 1,
+      image: couponImage,
+      hasImage: s.journey === 'j4' && i === whatsAppDef.messages.length - 1
+    }));
+
+    // ---- badges (perfil) ----
+    const badgeDefs = [
+      { kind: 'welcome', label: 'Bienvenida', earned: true },
+      { kind: 'purchase', label: 'Primera compra', earned: tierKey !== 'nueva' },
+      { kind: 'premiere', label: 'Premiere', earned: rank >= 1 },
+      { kind: 'prive', label: 'Privé', earned: rank >= 2 },
+      { kind: 'ambassador', label: 'Embajadora', earned: s.missions.referral.status === 'claimed' },
+      { kind: 'trivia', label: 'Trivia Master', earned: s.trivaDone && s.trivaScore === this.TRIVA_Q.length }
+    ];
+    const badgesList = badgeDefs.map(b => ({
+      label: b.label,
+      isWelcome: b.kind === 'welcome',
+      isPurchase: b.kind === 'purchase',
+      isPremiere: b.kind === 'premiere',
+      isPrive: b.kind === 'prive',
+      isAmbassador: b.kind === 'ambassador',
+      isTrivia: b.kind === 'trivia',
+      bg: b.earned ? '#FFFEFB' : '#F3EEE2',
+      border: b.earned ? '#D9D0BD' : '#E4E1D7',
+      fg: b.earned ? '#8F1018' : '#C5BEB0',
+      red: b.earned ? '#8F1018' : '#CFC8BA',
+      gold: b.earned ? '#AA874E' : '#D7D0C2',
+      softRed: b.earned ? 'rgba(143,16,24,0.10)' : 'rgba(207,200,186,0.20)',
+      op: b.earned ? 1 : 0.7,
+      shadow: b.earned ? '0 7px 18px rgba(23,21,18,0.045)' : 'none'
+    }));
+
+    // ---- ledger ----
+    const ledgerList = this.LEDGER.map(l => ({
+      label: l.label, date: l.date,
+      deltaText: (l.delta > 0 ? '+' : '') + l.delta.toLocaleString('es-AR') + ' pts',
+      color: l.delta > 0 ? '#171512' : '#A6332A'
+    }));
+    const ledgerPreview = ledgerList.slice(0, 3);
+
+    // ---- coupons (assigned + claimed populares) ----
+    const couponDone = key => !!s.act[key];
+    const redeemAndShow = (key, code) => {
+      if (!couponDone(key)) this.mark(key, `Cupón ${code} canjeado ✓`);
+      this.setState({ redeeming: key, tab: 'caja' });
+    };
+    const baseCoupons = this.COUPONS_DEF.map(cdef => {
+      const code = s[cdef.codeKey];
+      const doneFlag = couponDone(cdef.key);
+      return {
+        key: cdef.key, title: cdef.title, desc: cdef.desc, pct: cdef.pct, expiry: cdef.expiry, code,
+        btnBg: doneFlag ? '#EDE9DD' : '#171512', btnFg: doneFlag ? '#77736A' : '#FFFFFF',
+        btnText: doneFlag ? 'Ver en Caja' : 'Canjear',
+        action: () => redeemAndShow(cdef.key, code),
+        selectForCaja: () => this.setState({ redeeming: cdef.key })
+      };
+    });
+    const claimedPopularCoupons = Object.keys(s.claimedPopular).map(pkey => {
+      const pdef = this.POPULAR_DEF.find(p => p.key === pkey);
+      const code = s.claimedPopular[pkey];
+      const doneFlag = couponDone(pkey);
+      return {
+        key: pkey, title: pdef.title, desc: pdef.desc, pct: pdef.pct, expiry: pdef.expiry, code,
+        btnBg: doneFlag ? '#EDE9DD' : '#171512', btnFg: doneFlag ? '#77736A' : '#FFFFFF',
+        btnText: doneFlag ? 'Ver en Caja' : 'Canjear',
+        action: () => redeemAndShow(pkey, code),
+        selectForCaja: () => this.setState({ redeeming: pkey })
+      };
+    });
+    const couponsList = [...baseCoupons, ...claimedPopularCoupons];
+    const couponLookup = key => couponsList.find(c => c.key === key);
+    const featuredCoupon = couponLookup('cross');
+
+    // ---- cupones populares ----
+    const popularList = this.POPULAR_DEF.map(pdef => {
+      const claimed = !!s.claimedPopular[pdef.key];
+      return {
+        tag: pdef.tag, title: pdef.title, caption: claimed ? 'Ya en tus cupones' : pdef.caption,
+        action: () => {
+          if (claimed) { redeemAndShow(pdef.key, s.claimedPopular[pdef.key]); return; }
+          const code = this.genCode();
+          this.setState(prev => ({ claimedPopular: { ...prev.claimedPopular, [pdef.key]: code } }));
+          this.toast('Cupón sumado a Mis cupones ✓');
+        }
+      };
+    });
+
+    // ---- promotions ----
+    const promotionsList = this.PROMOTIONS_DEF.map(p => ({
+      tag: p.tag, big: p.big, sub: p.sub, desc: p.desc, cta: p.cta,
+      bg: p.featured ? '#1C1A17' : '#FFFFFF', fg: p.featured ? '#FFFFFF' : '#171512',
+      border: p.featured ? '#1C1A17' : '#DAD4C3',
+      tagBg: p.featured ? 'rgba(255,255,255,0.14)' : '#F3EEE2',
+      tagColor: p.featured ? '#C9A860' : '#A6332A',
+      descColor: p.featured ? 'rgba(255,255,255,0.65)' : '#77736A',
+      btnBg: p.featured ? '#C9A860' : '#171512', btnFg: p.featured ? '#1C1A17' : '#FFFFFF',
+      action: () => this.toast(p.featured ? 'Explorando la selección VIP…' : 'Abriendo detalle de la promo…')
+    }));
+
+    // ---- stores / content ----
+    const storesList = this.STORES_DEF;
+    const contentList = this.CONTENT_DEF;
+
+    // ---- missions ----
+    const missionsList = Object.keys(this.MISSIONS_DEF).map(key => {
+      const def = this.MISSIONS_DEF[key];
+      const m = s.missions[key];
+      const steps = def.steps;
+      const isReferral = key === 'referral';
+      const ready = m.status === 'accepted' && m.progress >= steps;
+      let statusLabel, statusColor, statusBg, btnText, action;
+      if (m.status === 'claimed') {
+        statusLabel = 'Completada'; statusColor = '#3E7A4C'; statusBg = '#E7F2E9';
+        btnText = 'Recompensa reclamada ✓'; action = () => {};
+      } else if (ready) {
+        statusLabel = 'Lista para reclamar'; statusColor = '#A5834C'; statusBg = '#F7EFDF';
+        btnText = 'Reclamar recompensa';
+        action = () => { this.setState(prev => ({ missions: { ...prev.missions, [key]: { ...prev.missions[key], status: 'claimed' } } })); this.toast(`Misión completada · +${def.reward} pts`); };
+      } else if (m.status === 'accepted') {
+        statusLabel = 'En progreso'; statusColor = '#A6332A'; statusBg = '#FBEAE8';
+        btnText = isReferral ? 'Ya referí, marcar como completa' : (steps > 1 ? 'Sumar avance' : 'Marcar como completada');
+        action = () => { this.setState(prev => { const cur = prev.missions[key]; return { missions: { ...prev.missions, [key]: { status: 'accepted', progress: Math.min(steps, cur.progress + 1) } } }; }); this.toast('Avance sumado'); };
+      } else {
+        statusLabel = 'Pendiente'; statusColor = '#8A8779'; statusBg = '#F0EDE4';
+        btnText = 'Aceptar misión';
+        action = () => { this.setState(prev => ({ missions: { ...prev.missions, [key]: { status: 'accepted', progress: 0 } } })); this.toast('Misión aceptada'); };
+      }
+      if (key === 'profile' && m.status !== 'claimed') {
+        btnText = 'Completar perfil';
+        action = () => this.goTab('perfil');
+      }
+      const showRing = steps > 1 && m.status !== 'none';
+      return {
+        title: def.title, desc: def.desc, reward: `+${def.reward} pts`,
+        statusLabel, statusColor, statusBg,
+        showRing, showDesc: !showRing, pct: Math.round((m.progress / steps) * 100), stepText: `${m.progress}/${steps}`,
+        btnBg: (m.status === 'claimed') ? '#EDE9DD' : '#171512', btnFg: (m.status === 'claimed') ? '#77736A' : '#FFFFFF',
+        btnText, action,
+        showLink: isReferral && m.status !== 'none',
+        copyText: s.copied ? 'Copiado ✓' : 'Copiar link',
+        copyReferral: () => { this.setState({ copied: true }); this.toast('Link copiado ✓'); setTimeout(() => this.setState({ copied: false }), 2200); }
+      };
+    });
+
+    // ---- trivia ----
+    const TQ = this.TRIVA_Q;
+    const qidx = Math.min(s.trivaIdx, TQ.length - 1);
+    const currentQ = TQ[qidx];
+    const trivaActive = s.trivaOpen && !s.trivaDone;
+    const trivaFinished = s.trivaOpen && s.trivaDone;
+    const answered = s.trivaAnswer !== null;
+    const trivaOptions = currentQ.options.map((opt, i) => {
+      let bg = '#FFFFFF', border = '#DBD7CC', fg = '#171512';
+      if (answered) {
+        if (i === currentQ.correct) { bg = '#EAF3EA'; border = '#6FBF73'; fg = '#171512'; }
+        else if (i === s.trivaAnswer) { bg = '#FBEAE8'; border = '#A6332A'; fg = '#171512'; }
+        else { bg = '#FFFFFF'; border = '#E4E1D7'; fg = '#B3AFA3'; }
+      }
+      return {
+        text: opt, bg, border, fg,
+        select: () => {
+          if (s.trivaAnswer !== null) return;
+          const correct = i === currentQ.correct;
+          this.setState(prev => ({ trivaAnswer: i, trivaScore: prev.trivaScore + (correct ? 1 : 0) }));
+        }
+      };
+    });
+    const isLastQ = qidx === TQ.length - 1;
+
+    // ---- caja detail ----
+    const redeemDef = s.redeeming ? couponLookup(s.redeeming) : null;
+
+    // ---- nav colors ----
+    const activeColor = '#171512', idleColor = '#B3AFA3';
 
     return {
-      journeyList, tierList,
+      journeyList, tierList, storyList,
+      prevStory: () => goStory(-1), nextStory: () => goStory(1),
+      storyContextTitle: storyContext.title, storyContextBody: storyContext.body,
+      storyContextTag1: storyContext.tag1, storyContextTag2: storyContext.tag2,
       prevJourney: () => go(idx < 0 ? 0 : idx - 1),
       nextJourney: () => go(idx < 0 ? 0 : idx + 1),
       showCanal: (this.props.showCanal ?? true) && !!j,
       canalType: j ? j.canal.type : '', canalIsEmail: j && j.canal.type === 'Email', canalIsChat: j && j.canal.type === 'WhatsApp',
       canalSubject: j ? j.canal.subject : '', canalBody: j ? j.canal.body : '', canalTime: j ? (j.canal.time || '') : '',
-      memberName: this.props.memberName ?? 'Valentina',
+      memberName: displayName, memberId: s.memberId,
       tierColor: t.color, tierLabel: t.label,
-      pointsDisplay: points.toLocaleString('es-AR'), percent, nextLabel,
+      cardBg: cardStyle.bg, cardFg: cardStyle.fg, cardText: cardStyle.text, cardMuted: cardStyle.muted,
+      cardAccent: cardStyle.accent, cardPillBg: cardStyle.pillBg, cardPillBorder: cardStyle.pillBorder, cardLine: cardStyle.line,
+      pointsDisplay: pointsText, percent, nextLabel,
+      featuredBenefitSource: s.story === 'purchase' ? 'Compra detectada' : 'Nuevo beneficio',
+      featuredBenefitImage: couponImage,
+      featuredBenefitTag: featuredCoupon ? featuredCoupon.pct : '25% OFF',
+      featuredBenefitTitle: featuredCoupon ? featuredCoupon.title : '25% OFF Skincare / Maquillaje',
+      featuredBenefitBody: 'Generado después de tu compra en Fragancias. Usalo para descubrir una rutina de cuidado o maquillaje Rouge.',
+      featuredBenefitCta: s.story === 'checkout' ? 'Ver en caja' : 'Ver cupón',
+      featuredBenefitAction: () => redeemAndShow('cross', s.crossCode),
+      profileFormTitle: profileClaimed ? 'Perfil completo' : 'Guardá tus datos y sumá 100 pts',
+      profileFormHelper: profileClaimed ? 'Tu perfil ya está completo. Los 100 pts de bienvenida fueron acreditados en tu cuenta.' : 'Al guardar, acreditamos 100 pts de bienvenida y desbloqueamos la insignia de perfil.',
+      profileBadgeText: profileClaimed ? 'Completado' : '+100 pts',
+      profileBadgeBg: profileClaimed ? '#E7F2E9' : '#FBEAE8',
+      profileBadgeFg: profileClaimed ? '#3E7A4C' : '#A6332A',
+      profileBtnBg: profileClaimed ? '#EDE9DD' : '#171512',
+      profileBtnFg: profileClaimed ? '#77736A' : '#FFFFFF',
+      profileBtnText: profileClaimed ? 'Perfil guardado ✓' : 'Guardar perfil',
+      saveProfile: () => {
+        if (s.missions.profile.status === 'claimed') return;
+        this.setState(prev => ({ missions: { ...prev.missions, profile: { status: 'claimed', progress: 1 } } }));
+        this.toast('Perfil completo · +100 pts');
+      },
+      whatsAppStatus: whatsAppDef.status, whatsAppMessages,
       benefits: this.BENEFITS[tierKey],
-      showWelcome, showProfile, showVip, showReactivation, showCrossSell, showReferral,
       showPoweredBy: this.props.showPoweredBy ?? true,
-      welcomeCode: s.welcomeCode, crossCode: s.crossCode,
-      welcomeBtnBg: w.bg, welcomeBtnFg: w.fg, welcomeBtnText: w.text,
-      activateWelcome: () => { if (!done('welcome')) this.mark('welcome', `Cupón ${s.welcomeCode} activado ✓`); },
-      crossBtnBg: c.bg, crossBtnFg: c.fg, crossBtnText: c.text,
-      activateCross: () => { if (!done('cross')) this.mark('cross', `Beneficio ${s.crossCode} aplicado ✓`); },
-      reactBtnBg: r.bg, reactBtnFg: r.fg, reactBtnText: r.text,
-      activateReact: () => { if (!done('react')) this.mark('react', 'Beneficio de reactivación activado ✓'); },
-      profileTitle: s.profileDone ? 'Perfil completo' : 'Sumá 100 pts en un minuto',
-      profileBody: s.profileDone ? 'Gracias por contarnos más de vos. Ya acreditamos 100 pts de bienvenida en tu cuenta Elite.' : 'Contanos un poco más de vos y sumá puntos de bienvenida a tu cuenta Elite.',
-      profileBtnBg: s.profileDone ? '#EDE9DD' : '#171512', profileBtnFg: s.profileDone ? '#77736A' : '#FFFFFF',
-      profileBtnText: s.profileDone ? '+100 pts acreditados ✓' : 'Completar datos',
-      completeProfile: () => { if (!s.profileDone) { this.setState({ profileDone: true }); this.toast('Sumaste 100 pts ✓'); } },
-      copyBtnText: s.copied ? 'Copiado ✓' : 'Copiar link',
-      copyReferral: () => { this.setState({ copied: true }); this.toast('Link copiado ✓'); setTimeout(() => this.setState({ copied: false }), 2200); },
-      shareReferral: () => this.toast('Abriendo WhatsApp…'),
-      openVip: () => this.toast('Explorando la selección VIP…'),
+
+      tab: s.tab,
+      tab_inicio: s.tab === 'inicio', tab_recompensas: s.tab === 'recompensas',
+      tab_perfil: s.tab === 'perfil', tab_caja: s.tab === 'caja',
+
+      trivaOpen: s.trivaOpen, trivaClosed: !s.trivaOpen,
+      openTriva: () => this.setState({ trivaOpen: true, trivaIdx: 0, trivaAnswer: null, trivaScore: 0, trivaDone: false }),
+      closeTriva: () => this.setState({ trivaOpen: false }),
+
+      addToWallet: () => this.toast('Agregado a Apple Wallet ✓'),
+
+      badgesList, ledgerList, ledgerPreview,
+      couponsList, popularList, promotionsList, storesList, contentList, missionsList,
+
+      showCajaId: !s.redeeming, showCajaCoupon: !!s.redeeming,
+      redeemTitle: redeemDef ? redeemDef.title : '', redeemCode: redeemDef ? redeemDef.code : '', redeemExpiry: redeemDef ? redeemDef.expiry : '',
+      downloadReceipt: () => this.toast('Comprobante descargado ✓'),
+      closeCajaCoupon: () => this.setState({ redeeming: null }),
+
+      trivaActive, trivaFinished, trivaNum: qidx + 1, trivaTotal: TQ.length, trivaQuestion: currentQ.q, trivaOptions,
+      trivaShowNext: answered, trivaNextText: isLastQ ? 'Ver resultado' : 'Siguiente pregunta',
+      trivaNext: () => { if (isLastQ) this.setState({ trivaDone: true }); else this.setState(prev => ({ trivaIdx: prev.trivaIdx + 1, trivaAnswer: null })); },
+      trivaEarned: s.trivaScore * 20, trivaScore: s.trivaScore,
+      trivaReset: () => this.setState({ trivaIdx: 0, trivaAnswer: null, trivaScore: 0, trivaDone: false }),
+
+      goInicio: () => this.goTab('inicio'), goRecompensas: () => this.goTab('recompensas'),
+      goPerfil: () => this.goTab('perfil'), goCaja: () => this.goTab('caja'),
+      navInicio: s.tab === 'inicio' ? activeColor : idleColor,
+      navRecompensas: s.tab === 'recompensas' ? activeColor : idleColor,
+      navPerfil: s.tab === 'perfil' ? activeColor : idleColor,
+      navCaja: s.tab === 'caja' ? activeColor : idleColor,
+
       toastMsg: s.toast, toastOpacity: s.toastOn ? 1 : 0, toastY: s.toastOn ? 0 : 12
     };
   }
